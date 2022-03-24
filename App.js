@@ -1,10 +1,13 @@
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View } from 'react-native';
 import MapView from 'react-native-maps'
+import Login from './src/components/login';
+import Register from './src/components/register';
+import stylesGeneral from './src/components/style';
 
 export default function App() {
   return (
-    <View style={styles.container}>
+  /*  <View style={styles.container}>
       <Text>Parkit</Text>
       <MapView style={{width: 400, height: 400}}
         initialRegion={{
@@ -14,15 +17,11 @@ export default function App() {
           longitudeDelta: 0.0421
         }}
       ></MapView>
+    </View>*/
+    <View style={stylesGeneral.container}>
+      <Login />
     </View>
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+
