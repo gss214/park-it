@@ -6,13 +6,12 @@ import { StyleSheet } from "react-native";
 const stylesGeneral = StyleSheet.create({
     container: {
       flex: 1,
-      backgroundColor: '#BDF4F4',
-      alignItems: 'center',
+      backgroundColor: '#FFFFFF',
       justifyContent: 'center',
     },
     button: {
-      backgroundColor: '#B39DDB',
-      color: '#B39DDB',
+      backgroundColor: '#6FD34B',
+      color: '#FFFFFF',
       borderRadius: 50,
       padding: 10,
       marginBottom: 15,
@@ -21,13 +20,14 @@ const stylesGeneral = StyleSheet.create({
     input: {
         borderRadius: 50,
         height: 40,
-        backgroundColor: "#EAC58A",
+        backgroundColor: "#F3F3F3",
         marginTop: 5,
         marginBottom: 5,
         padding: 10
     },
     textButton: {
         fontSize: 20,
+        color: "#FFFFFF"
     },
     formLabel: {
         color: "#000000",

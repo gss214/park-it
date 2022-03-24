@@ -2,8 +2,12 @@ import { StyleSheet } from "react-native";
 
 
 const styles = StyleSheet.create({
+    containerForm: {
+
+    },
+
     form: {
-        width: "90%",
+        width: "100%",
         height: "auto" // para tomar o espaço que precisar
     },
     texto: {
@@ -13,7 +17,15 @@ const styles = StyleSheet.create({
     },
     loginContainer: {
         width: "100%",
+    },
+    containerIcon: {
+        width: "1%",
+        alignSelf: 'center'
+    }, 
+    appIconImage: {
+
     }
+
 });
 
 export default styles;

@@ -7,12 +7,13 @@ export default function Login() {
 
 
     return (
-        <View style={styles.container}>
-            <View>
-                <Image style={stylesGeneral.appIcon} source={require('../../../res/images/app_icon.png')}></Image>
+        <View style={styles.containerForm}>
+            
+            <View style={styles.containerIcon}>
+                <Image style={styles.appIconImage} source={require('../../../res/images/app_icon.png')}></Image>
             </View>
-            <View style={styles.form}>
 
+            <View style={styles.form}>
                 <View >
                     {/* <Text style={stylesGeneral.formLabel}>Email: </Text> */}
                     <TextInput style={stylesGeneral.input}

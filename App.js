@@ -19,7 +19,7 @@ export default function App() {
       ></MapView>
     </View>*/
     <View style={stylesGeneral.container}>
-      <Register />
+      <Login />
     </View>
   );
 }
