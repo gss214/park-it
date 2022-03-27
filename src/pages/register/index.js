@@ -77,11 +77,11 @@ export const Register = (props) => {
           })
         }
       }
-      console.log('usuario cadastrado com sucesso!\n' + value.user.email);
-      Alert.alert("Sucesso", "Usuário cadastrato com sucesso");
+      console.log('usuario cadastrado com sucesso!\n' + value.user.email)
+      Alert.alert("Sucesso", "Usuário cadastrado com sucesso")
+      props.navigation.navigate('Login')
     })
-    .catch(
-      Alert.alert("Erro", "Usuário não cadastrado com sucesso")
+    .catch(error => console.log(error)
     );
   };
 
