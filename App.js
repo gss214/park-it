@@ -1,9 +1,15 @@
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native'
 import MapView from 'react-native-maps'
-import Login from './src/components/login';
-import Register from './src/components/register';
-import stylesGeneral from './src/components/style';
+import stylesGeneral from './src/components/style'
+import { NavigationContainer } from "@react-navigation/native";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
+
+import { Login } from './src/pages/login'
+import { Register } from './src/pages/register'
+import { Home } from './src/pages/home';
+
+const Stack = createNativeStackNavigator()
 
 export default function App() {
   return (
@@ -19,7 +25,25 @@ export default function App() {
       ></MapView>
     </View>*/
     <View style={stylesGeneral.container}>
-      <Login />
+       <NavigationContainer>
+         <Stack.Navigator>
+           <Stack.Screen 
+             name="Login" 
+             component={Login}
+             options={{ headerShown: false }}
+             />
+           <Stack.Screen 
+             name="Register" 
+             options={{ headerShown: false }}
+             component={Register}
+           />
+           <Stack.Screen 
+             name="Home" 
+             options={{ headerShown: false }}
+             component={Home}
+           />
+         </Stack.Navigator>
+      </NavigationContainer>
     </View>
   );
 }
