@@ -16,8 +16,10 @@ export const Login = (props) => {
       console.log('usuario logado com sucesso! ' + value.user.email);
       props.navigation.navigate('Home');
     })
-    .catch(
-      Alert.alert("Erro", "Usuário ou senha invalida")
+    .catch(error => {
+        Alert.alert("Erro", "Usuário ou senha invalida");
+        console.log(error);
+      }
     );
   };
 
