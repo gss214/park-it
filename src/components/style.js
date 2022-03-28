@@ -15,27 +15,36 @@ const stylesGeneral = StyleSheet.create({
       borderRadius: 50,
       padding: 10,
       marginBottom: 15,
-      alignItems: "center"
+      width: 200,
+      alignItems: "center",
+      alignSelf: 'center',
+      alignContent: 'center',
+      justifyContent: 'center',
     }, 
     input: {
-        borderRadius: 50,
-        height: 40,
-        backgroundColor: "#F3F3F3",
-        marginTop: 5,
-        marginBottom: 5,
-        padding: 10
+      borderRadius: 50,
+      height: 40,
+      backgroundColor: "#F3F3F3",
+      marginTop: 5,
+      marginBottom: 5,
+      padding: 10,
+      width: 300,
+      alignItems: "center",
+      alignSelf: 'center',
+      alignContent: 'center',
+      justifyContent: 'center',
     },
     textButton: {
-        fontSize: 20,
-        color: "#FFFFFF"
+      fontSize: 20,
+      color: "#FFFFFF"
     },
     formLabel: {
-        color: "#000000",
-        fontSize: 18,   
+      color: "#000000",
+      fontSize: 18,   
     },
     appIcon: {
-        width: "90%",
-        height: "40%"
+      width: "90%",
+      height: "40%"
     }
 });
 

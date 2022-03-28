@@ -1,16 +1,15 @@
 import { StyleSheet } from "react-native";
 
-
 const styles = StyleSheet.create({
     containerForm: {
-
+        flex:1,
+        alignItems:'center'
     },
-
     form: {
         width: "100%",
         height: "auto" // para tomar o espaço que precisar
     },
-    texto: {
+    text: {
         justifyContent: "center",
         textAlign: "center",
         marginTop: 10
@@ -23,9 +22,9 @@ const styles = StyleSheet.create({
         alignSelf: 'center'
     }, 
     appIconImage: {
-
+        alignSelf: 'center',
+        marginTop: 100
     }
-
 });
 
 export default styles;
