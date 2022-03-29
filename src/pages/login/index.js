@@ -44,8 +44,8 @@ export const Login = (props) => {
           </TextInput>
           <TouchableOpacity style={stylesGeneral.button}>
             <Text 
-              style={stylesGeneral.textButton}
-              onPress={() => Login()}>
+              style={stylesGeneral.textButton}//arrumar o caminho depois
+              onPress={() => props.navigation.navigate("RegisterPlace")}> 
               Entrar
             </Text>
           </TouchableOpacity>
