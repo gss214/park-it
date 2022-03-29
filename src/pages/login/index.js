@@ -17,7 +17,6 @@ export const Login = (props) => {
       props.navigation.navigate('Home');
     })
     .catch(error => {
-        Alert.alert("Erro", "Usuário ou senha invalida");
         console.log(error);
       }
     );

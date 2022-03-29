@@ -21,7 +21,7 @@ export const Home = (props) => {
 
     return(
         <View style={stylesGeneral.container}>
-           <Text style={{alignSelf:'center'}}>Olá! {user.email}</Text>
+           <Text style={{alignSelf:'center'}}>Olá!</Text>
            <TouchableOpacity 
             style={stylesGeneral.button}
             onPress={() => logout()}>
