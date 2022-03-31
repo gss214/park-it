@@ -5,7 +5,6 @@ import { TopTabNavigator } from "../navigators/tabNavigation"
 
 import { Login } from '../pages/login'
 import { Register } from '../pages/register'
-import { Home } from '../pages/home'
 
 const Stack = createNativeStackNavigator()
 
@@ -13,15 +12,15 @@ const MainStackNavigator = () => {
   return (
     <Stack.Navigator>
       <Stack.Screen 
+        name="TopTabNavigator" 
+        component={TopTabNavigator}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen 
         name="Login" 
         options={{ headerShown: false }}
         component={Login}
         />
-      <Stack.Screen 
-        name="Home" 
-        component={TopTabNavigator}
-        options={{ headerShown: false }}
-      />
       <Stack.Screen 
         name="Register" 
         options={{ headerShown: false }}
