@@ -1,5 +1,13 @@
 import React, { useState } from 'react'
-import { Alert, Text, View, TextInput, Image, TouchableOpacity} from "react-native"
+import { 
+  Alert, 
+  Text, 
+  View, 
+  TextInput, 
+  Keyboard,
+  Image, 
+  TouchableOpacity,
+  TouchableWithoutFeedback} from "react-native"
 import stylesGeneral from '../../components/style'
 import styles from './style'
 
@@ -86,8 +94,9 @@ export const Register = (props) => {
   };
 
   return (
-    <View style={styles.containerForm}>
-      <View style={styles.rowContanier}>
+    <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
+      <View style={styles.containerForm}>
+        <View style={styles.rowContanier}>
           {selectedImage !== null ? (
                 <View>
                   <Image
@@ -102,66 +111,68 @@ export const Register = (props) => {
                     style={styles.photo}
                   />
                   </>
-                )}
-        <TouchableOpacity style={stylesGeneral.button} onPress={openImagePickerAsync}>
-          {
-            selectedImage !== null ? (
-              <View>
-                <Text style={stylesGeneral.textButton}>Adicionar foto</Text>
-              </View>
-            ) : (
-              <>
-                <Text style={stylesGeneral.textButton}>Adicionar foto</Text>
-                </>
-              )
-            }
+                )
+              }
+          <TouchableOpacity style={stylesGeneral.button} onPress={openImagePickerAsync}>
+            {
+              selectedImage !== null ? (
+                <View>
+                  <Text style={stylesGeneral.textButton}>Adicionar foto</Text>
+                </View>
+              ) : (
+                <>
+                  <Text style={stylesGeneral.textButton}>Adicionar foto</Text>
+                  </>
+                )
+              }
+          </TouchableOpacity>
+        </View>
+        <TextInput
+          style={stylesGeneral.input}
+          placeholder="Email"
+          keyboardType='email-address'
+          value={email}
+          onChangeText={(email) => setEmail(email)}>
+        </TextInput>
+        <TextInput
+          style={stylesGeneral.input}
+          placeholder="Nome"
+          keyboardType='default'
+          value={name}
+          onChangeText={(name) => setName(name)}>
+        </TextInput>
+        <TextInput
+          style={stylesGeneral.input}
+          placeholder="Placa do carro"
+          keyboardType='default'
+          value={licensePlate}
+          onChangeText={(licensePlate) => setLicensePlate(licensePlate)}>
+        </TextInput>
+        <TextInput 
+          style={stylesGeneral.input} 
+          placeholder="Senha"
+          keyboardType='default' 
+          secureTextEntry={true}
+          value={password}
+          onChangeText={(password) => setPassword(password)}>
+        </TextInput>
+        <TextInput
+          style={stylesGeneral.input} 
+          placeholder="Confirmar Senha"
+          keyboardType='default'
+          secureTextEntry={true}
+          value={passwordConfirmation}
+          onChangeText={(passwordConfirmation) => setPasswordConfirmation(passwordConfirmation)}>
+        </TextInput>
+        <TouchableOpacity 
+          style={stylesGeneral.button}
+          onPress={() => createUser()}>
+          <Text style={stylesGeneral.textButton}>Cadastrar</Text>
         </TouchableOpacity>
+        <Text
+          onPress={() => props.navigation.navigate("Login")}>
+          Já possui cadastro?</Text>
       </View>
-      <TextInput
-        style={stylesGeneral.input}
-        placeholder="Email"
-        keyboardType='email-address'
-        value={email}
-        onChangeText={(email) => setEmail(email)}>
-      </TextInput>
-      <TextInput
-        style={stylesGeneral.input}
-        placeholder="Nome"
-        keyboardType='default'
-        value={name}
-        onChangeText={(name) => setName(name)}>
-      </TextInput>
-      <TextInput
-        style={stylesGeneral.input}
-        placeholder="Placa do carro"
-        keyboardType='default'
-        value={licensePlate}
-        onChangeText={(licensePlate) => setLicensePlate(licensePlate)}>
-      </TextInput>
-      <TextInput 
-        style={stylesGeneral.input} 
-        placeholder="Senha"
-        keyboardType='default' 
-        secureTextEntry={true}
-        value={password}
-        onChangeText={(password) => setPassword(password)}>
-      </TextInput>
-      <TextInput
-        style={stylesGeneral.input} 
-        placeholder="Confirmar Senha"
-        keyboardType='default'
-        secureTextEntry={true}
-        value={passwordConfirmation}
-        onChangeText={(passwordConfirmation) => setPasswordConfirmation(passwordConfirmation)}>
-      </TextInput>
-      <TouchableOpacity 
-        style={stylesGeneral.button}
-        onPress={() => createUser()}>
-        <Text style={stylesGeneral.textButton}>Cadastrar</Text>
-      </TouchableOpacity>
-      <Text
-        onPress={() => props.navigation.navigate("Login")}>
-        Já possui cadastro?</Text>
-    </View>
+    </TouchableWithoutFeedback>
   );
 }
