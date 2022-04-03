@@ -10,9 +10,9 @@ const Tab = createMaterialTopTabNavigator();
 const TopTabNavigator = () => {
   return (
     <Tab.Navigator style={{marginTop:30}}>
-      <Tab.Screen name="Home" component={Home} />
-      <Tab.Screen name="Profile" component={Profile} />
-      <Tab.Screen name="CreateParkingLot" component={CreateParkingLot} />
+      <Tab.Screen name="Vagas" component={Home} />
+      <Tab.Screen name="Perfil" component={Profile} />
+      <Tab.Screen name="Novo Estacionamento" component={CreateParkingLot} />
     </Tab.Navigator>
   );
 };
