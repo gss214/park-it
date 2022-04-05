@@ -8,16 +8,9 @@ const styles = StyleSheet.create({
   },
   mapView: {
     width: 600,
-    height: 900,
-    marginBottom: 90
-  },
-  search:{
+    height: 200,
     position: 'absolute',
-    top: 20,
-    left: 20,
-    right: 100,
-    bottom: 100,
-    width: 350
+    top: 0
   }
 });
 

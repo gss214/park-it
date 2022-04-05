@@ -1,5 +1,10 @@
 import React, { useState, useEffect } from "react"
-import {View, Text, Image, TouchableOpacity} from "react-native"
+import {
+  ActivityIndicator,
+  View, 
+  Text, 
+  Image, 
+  TouchableOpacity} from "react-native"
 import styles from "./style"
 import stylesGeneral from "../../components/style"
 import MapView, { Marker } from 'react-native-maps'
@@ -8,6 +13,8 @@ import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplet
 
 import { signOut } from "firebase/auth"
 import { auth } from "../../../firebase"
+import { db } from "../../../firebase";
+import { collection, getDocs, query, where } from "firebase/firestore";
 
 export const Home = (props) => {
 
@@ -22,73 +29,92 @@ export const Home = (props) => {
     .catch(error => console.log(error))
   }
 
-  const [location, setLocation] = useState(null)
-  const [destination, setDestination] = useState({ latitude: 37.78825, longitude: -122.4324 })
-  const [marker, setMarker] = useState({ latitude: -15.879719, longitude: -122.4324})
-  const [region, setRegion] = useState({ latitude: 37.78825, longitude: -48.0088149 })
-  
-  const [errorMsg, setErrorMsg] = useState(null)
+  const latitudeDelta = 0.04
+  const longitudeDelta = 0.05
 
-  useEffect(() => {
-    (async () => {
-      let { status } = await Location.requestForegroundPermissionsAsync()
+  const [location, setLocation] = useState(null)
+  const [marker, setMarker] = useState({ latitude: 37.78825, longitude: -48.0088149 })
+  const [region, setRegion] = useState({ latitude: 37.78825, longitude: -48.0088149})
+  const [errorMsg, setErrorMsg] = useState(null)
+  const [loading, setLoading] = useState(true);
+  const [parkingList, setParkingList] = useState(null)
+
+  const myquery = query(collection(db, "parking"));
+
+  async function getLocation(){
+    let { status } = await Location.requestForegroundPermissionsAsync()
       if (status !== 'granted') {
         setErrorMsg('Permission to access location was denied')
         return
       }
-      let location = await Location.getCurrentPositionAsync({enableHighAccuracy:true})
+      let _location = await Location.getCurrentPositionAsync({enableHighAccuracy:true})
       setLocation({
-        latitude: location.coords.latitude,
-        longitude: location.coords.longitude,
-        latitudeDelta: 0.04,
-        longitudeDelta: 0.05
+        latitude: _location.coords.latitude,
+        longitude: _location.coords.longitude,
+        latitudeDelta: latitudeDelta,
+        longitudeDelta: longitudeDelta
       })
-      //setMarker(marker)
-      //console.log(location)
-    })();
-  }, []);
+      setRegion(location)
+  }
+
+  async function getParkingList() {
+    const markerlist = [];
+    const markersnapshot = await getDocs(myquery);
+    markersnapshot.forEach((doc) => {
+      markerlist.push({ ...doc.data(), id: doc.id });
+    });
+    setParkingList(markerlist)
+    setLoading(false)
+  }
+
+  useEffect(() => {
+    getLocation()
+    getParkingList()
+  }, [])
+
+  if (loading) {
+    return <ActivityIndicator></ActivityIndicator>
+  }
 
   return(
     <View style={stylesGeneral.container}>
       <MapView 
         style={styles.mapView}
         initialRegion={location}
-        region={region}
+       eg rion={region}
         showUserLocation={true}
         loadingEnabled={true}
       >
-        <Marker
-          coordinate={marker}
-          title={"title"}
-          description={"description"}  
-          >
-          <Image s
-            source={require('../../../assets/app_logo.png')}
-            style={{width: 90, height: 90}}
-          />
-        </Marker>
+        {parkingList ? parkingList.map(parking => (
+          <Marker key={parking.id}
+            coordinate={{
+              latitude: parking.coordinates.latitude,
+              longitude: parking.coordinates.longitude,
+              latitudeDelta: latitudeDelta,
+              longitudeDelta: longitudeDelta
+            }}
+            title={parking.name}
+            description={"Clique aqui para ver mais detalhes"}  
+            image={require('../../../assets/app_logo.png')}
+            onCalloutPress={() => props.navigation.navigate("TopTabNavigatorParking", {parking})}
+            >
+          </Marker>
+        )) : null}
       </MapView>
       <View style={styles.search}>
           <GooglePlacesAutocomplete
             placeholder='Pesquisar Endereço ou Estacionamento'
             autoFocus={false}
             onPress={(data, details) => {
-
               setRegion({
                 latitude: details.geometry.location.lat,
                 longitude: details.geometry.location.lng,
-                latitudeDelta: 0.04,
-                longitudeDelta: 0.05
+                latitudeDelta: latitudeDelta,
+                longitudeDelta: longitudeDelta
               })
-              setMarker({
-                latitude: details.geometry.location.lat,
-                longitude: details.geometry.location.lng,
-              })
-              console.log(region)
-              console.log(marker)
             }}
             query={{
-              key: 'AIzaSyA_bq5mqJAP_hSzNiwxSm6ItbY_nW_Hqhk',
+              key: 'AIzaSyBoZ3p7Cxx0w13fN6XNqxak7vZm7IfhGtU',
               language: 'pt-br',
               components: 'country:br'
             }}
