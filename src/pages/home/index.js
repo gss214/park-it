@@ -81,7 +81,7 @@ export const Home = (props) => {
       <MapView 
         style={styles.mapView}
         initialRegion={location}
-       eg rion={region}
+        region={region}
         showUserLocation={true}
         loadingEnabled={true}
       >
