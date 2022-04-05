@@ -81,7 +81,7 @@ export const Home = (props) => {
       <MapView 
         style={styles.mapView}
         initialRegion={location}
-        region={region}
+       eg rion={region}
         showUserLocation={true}
         loadingEnabled={true}
       >
@@ -114,7 +114,7 @@ export const Home = (props) => {
               })
             }}
             query={{
-              key: 'AIzaSyA_bq5mqJAP_hSzNiwxSm6ItbY_nW_Hqhk',
+              key: 'AIzaSyBoZ3p7Cxx0w13fN6XNqxak7vZm7IfhGtU',
               language: 'pt-br',
               components: 'country:br'
             }}
