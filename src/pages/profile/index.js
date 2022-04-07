@@ -3,13 +3,15 @@ import { View, Text, Image, TouchableOpacity, TouchableWithoutFeedback, TextInpu
 import * as ImagePicker from 'expo-image-picker';
 import stylesGeneral from "../../components/style"
 import styles from './style'
-import { auth } from "../../../firebase"
-import database from 'firebase/database'
-import { query } from "firebase/firestore";
+import { auth, db} from "../../../firebase"
+import { collection, getDocs, query, where, updateDoc, doc} from "@firebase/firestore";
+import {updatePassword } from "firebase/auth";
+import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
 
 
 export const Profile = (props) => {
     let openImagePickerAsync = async () => {
+        setUpdateProfilePictureFlag(true)
         let permissionResult = await ImagePicker.requestMediaLibraryPermissionsAsync();
         if (permissionResult.granted === false) {
             alert("Permission to access camera roll is required!");
@@ -22,20 +24,97 @@ export const Profile = (props) => {
         setSelectedImage(pickerResult.uri);
     }
 
+    const uploadImage = async (id) => {
+        const uploadUri = selectedImage;
+        const uriSplit = uploadUri.split('.');
+        const fileExtension = uriSplit[uriSplit.length - 1];
+    
+        const response = await fetch(uploadUri);
+        const blob = await response.blob(); 
+    
+        const storage = getStorage();
+        const storageRef = ref(storage);
+        const imageRef = ref(storageRef, `userProfilePictures/${id}.${fileExtension}`);
+    
+        uploadBytes(imageRef, blob).then((snapshot) => {
+          console.log('Uploaded a blob or file!');
+          getDownloadURL(imageRef)
+          .then(async url =>  {
+            await updateDoc(doc(db, "users", id), {
+              profileImage: url,
+            })
+          })
+          .catch(async e => {
+            console.log(e);
+            await updateDoc(doc(db, "users", id), {
+              profileImage: null,
+            })
+          })
+        })
+      } 
+
     const [selectedImage, setSelectedImage] = useState(null);
-    const [email, setEmail] = useState(null);
-    const [placa, setPlaca] = useState(null);
-    const [senha, setSenha] = useState(null);
-    const [confirmarSenha, setConfirmarSenha] = useState(null);
+    const [email, setEmail] = useState('');
+    const [name, setName] = useState('');
+    const [licensePlate, setLicensePlate] = useState('');
+    const [password, setPassword] = useState('');
+    const [passwordConfirmation, setPasswordConfirmation] = useState('');
+    const [updatedProfilePictureFlag, setUpdateProfilePictureFlag] = useState(false)
 
     async function getCurrentUserData() {
-        var user = auth.currentUser;
-        setEmail(user.email)
-        setPlaca(user.placa)
-        console.log(user)
-        var usersRef = database().ref('/users')
-        var usuario =  query(usersRef, where("email", "==", user.email));
+        const users = collection(db, 'users')
+        const userId = auth.currentUser.uid
+        const user = query(users, where('userUid', '==', userId))
+
+
+        await getDocs(user).then(querySnapshot => {
+            
+            querySnapshot.forEach((doc) => {
+                const data = doc.data()
+
+                setEmail(data.email)
+                setName(data.name)
+                setLicensePlate(data.licensePlate)
+                
+                const profileImage = data.profileImage    
+                if(profileImage !== null && typeof profileImage !== "undefined") {
+                    setSelectedImage(profileImage)
+                }
+        })}).catch(error => {
+            console.log(error)
+        }) 
+    }
+
+    async function updateUser() {
+
+        if(updatedProfilePictureFlag) {
+            try {
+                uploadImage(auth.currentUser.uid)
+            } catch {
+                await updateDoc(doc(db, "users", value.user.uid), {
+                profileImage: null,
+                })
+            }
+        }
         
+        updateDoc(doc(db, "users", auth.currentUser.uid), {
+            name: name,
+            licensePlate: licensePlate
+        }).then(() => {
+            console.log("Nome e placa alterados com sucesso")
+        }).catch(error => {
+            console.log("Erro ao atualizar nome e placa")
+            console.log(error)
+        })
+        
+        if(password.length >= 6) {
+            updatePassword(auth.currentUser, password).then(() => {
+                console.log("Senha atualizada com sucesso")
+            }).catch((error) => {
+                console.log("Erro ao atualizar senha")
+                console.log(error)
+            })
+        }
     }
 
     useEffect(() => {
@@ -55,19 +134,19 @@ export const Profile = (props) => {
                             />
                         </View>
                     ) : (
-                        <>
+                        <View>
                             <Image
                                 source={require('../../../assets/account_icon.png')}
                                 style={styles.photo}
                             />
-                        </>
+                        </View>
                     )
                     }
                     <TouchableOpacity style={stylesGeneral.button} onPress={openImagePickerAsync}>
                         {
                             selectedImage !== null ? (
                                 <View>
-                                    <Text style={stylesGeneral.textButton}>Adicionar foto</Text>
+                                    <Text style={stylesGeneral.textButton}>Alterar foto</Text>
                                 </View>
                             ) : (
                                 <>
@@ -89,13 +168,14 @@ export const Profile = (props) => {
                     style={stylesGeneral.input}
                     placeholder="Nome"
                     keyboardType='default'
+                    value={name}
                     onChangeText={(name) => setName(name)}>
                 </TextInput>
                 <TextInput
                     style={stylesGeneral.input}
                     placeholder="Placa do carro"
                     keyboardType='default'
-                    value={placa}
+                    value={licensePlate}
                     onChangeText={(licensePlate) => setLicensePlate(licensePlate)}>
                 </TextInput>
                 <TextInput
@@ -103,6 +183,7 @@ export const Profile = (props) => {
                     placeholder="Senha"
                     keyboardType='default'
                     secureTextEntry={true}
+                    value={password}
                     onChangeText={(password) => setPassword(password)}>
                 </TextInput>
                 <TextInput
@@ -110,11 +191,12 @@ export const Profile = (props) => {
                     placeholder="Confirmar Senha"
                     keyboardType='default'
                     secureTextEntry={true}
+                    value={passwordConfirmation}
                     onChangeText={(passwordConfirmation) => setPasswordConfirmation(passwordConfirmation)}>
                 </TextInput>
                 <TouchableOpacity
                     style={stylesGeneral.button}
-                    onPress={() => createUser()}>
+                    onPress={() => updateUser()}>
                     <Text style={stylesGeneral.textButton}>Atualizar Perfil</Text>
                 </TouchableOpacity>
             </View>
