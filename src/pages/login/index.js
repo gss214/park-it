@@ -47,12 +47,10 @@ export const Login = (props) => {
               onChangeText={password => setPassword(password)} 
               secureTextEntry={true}>
             </TextInput>
-            <TouchableOpacity style={stylesGeneral.button}>
-              <Text 
-                style={stylesGeneral.textButton}
-                onPress={() => Login()}>
-                Entrar
-              </Text>
+            <TouchableOpacity 
+              style={stylesGeneral.button}
+              onPress={() => Login()}>
+                <Text style={stylesGeneral.textButton}> Entrar </Text>
             </TouchableOpacity>
             <Text 
               style={styles.text}

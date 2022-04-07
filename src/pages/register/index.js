@@ -39,6 +39,31 @@ export const Register = (props) => {
     setSelectedImage(pickerResult.uri);
   }
 
+  async function createUser() {
+    await createUserWithEmailAndPassword(auth, email, password)
+    .then(async (value) => {
+      await setDoc(doc(db, "users", value.user.uid), {
+        email: email,
+        name: name,
+        licensePlate: licensePlate,
+        userUid: value.user.uid
+      })
+      if (selectedImage !== null) {
+        try {
+          uploadImage(value.user.uid)
+        } catch {
+          await updateDoc(doc(db, "users", value.user.uid), {
+            profileImage: null,
+          })
+        }
+      }
+      console.log('usuario cadastrado com sucesso!\n' + value.user.email + value.user.uid)
+      Alert.alert("Sucesso", "Usuário cadastrado com sucesso")
+      props.navigation.navigate('Login')
+    })
+    .catch(error => console.log(error));
+  };
+
   const uploadImage = async (id) => {
     const uploadUri = selectedImage;
     const uriSplit = uploadUri.split('.');
@@ -67,31 +92,6 @@ export const Register = (props) => {
       })
     })
   } 
-
-  async function createUser() {
-    await createUserWithEmailAndPassword(auth, email, password)
-    .then(async (value) => {
-      await setDoc(doc(db, "users", value.user.uid), {
-        email: email,
-        name: name,
-        licensePlate: licensePlate
-      })
-      if (selectedImage !== null) {
-        try {
-          uploadImage(value.user.uid)
-        } catch {
-          await updateDoc(doc(db, "users", value.user.uid), {
-            profileImage: null,
-          })
-        }
-      }
-      console.log('usuario cadastrado com sucesso!\n' + value.user.email)
-      Alert.alert("Sucesso", "Usuário cadastrado com sucesso")
-      props.navigation.navigate('Login')
-    })
-    .catch(error => console.log(error)
-    );
-  };
 
   return (
     <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
