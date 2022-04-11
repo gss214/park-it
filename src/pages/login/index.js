@@ -19,6 +19,7 @@ export const Login = (props) => {
   const [password, setPassword] = useState('')
 
   async function Login() {
+    props.navigation.navigate('TopTabNavigator');
     await signInWithEmailAndPassword(auth, email, password)
     .then(value => {
       console.log('usuario logado com sucesso! ' + value.user.email);

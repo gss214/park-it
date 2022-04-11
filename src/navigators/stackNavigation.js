@@ -4,6 +4,7 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack"
 import { TopTabNavigator } from "../navigators/tabNavigation"
 import { TopTabNavigatorParking } from "./tabNavigationParking"
 
+import { SearchParkSpot } from '../pages/searchParkSpot'
 import { Login } from '../pages/login'
 import { Register } from '../pages/register'
 
@@ -31,6 +32,11 @@ const MainStackNavigator = () => {
         name="TopTabNavigatorParking" 
         component={TopTabNavigatorParking}
         options={{ headerShown: false }}
+      />
+      <Stack.Screen 
+        name="SearchParkSpot" 
+        options={{ headerShown: false }}
+        component={SearchParkSpot}
       />
     </Stack.Navigator>
   );
