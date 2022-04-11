@@ -105,12 +105,12 @@ export const Register = (props) => {
                   />
                 </View>
               ) : (
-                <>
+                <View>
                 <Image
                     source={require('../../../assets/account_icon.png')}
                     style={styles.photo}
                   />
-                  </>
+                  </View>
                 )
               }
           <TouchableOpacity style={stylesGeneral.button} onPress={openImagePickerAsync}>
