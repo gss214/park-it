@@ -13,7 +13,7 @@ const TopTabNavigatorParking = ({route}) => {
     <Tab.Navigator style={{marginTop:30}}>
       <Tab.Screen name="Visão Geral" component={Overview} initialParams={parking} />
       <Tab.Screen name="Comentários" component={Comments} />
-      <Tab.Screen name="Detalhes" component={Details} />
+      <Tab.Screen name="Detalhes" component={Details} initialParams={parking} />
     </Tab.Navigator>
   );
 };
