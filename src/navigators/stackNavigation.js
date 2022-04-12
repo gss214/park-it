@@ -12,6 +12,7 @@ const Stack = createNativeStackNavigator()
 const MainStackNavigator = () => {
   return (
     <Stack.Navigator>
+      
       <Stack.Screen 
         name="TopTabNavigatorParking" 
         component={TopTabNavigatorParking}
@@ -22,6 +23,7 @@ const MainStackNavigator = () => {
         options={{ headerShown: false }}
         component={Login}
       />
+      
       <Stack.Screen 
         name="TopTabNavigator" 
         component={TopTabNavigator}

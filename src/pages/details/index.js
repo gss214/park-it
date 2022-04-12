@@ -7,6 +7,7 @@ import { Rating } from 'react-native-ratings'
 export const Details = (props) => {
 
   function getData() {
+    console.log(props.route.params) 
     const starCount = props.route.params.parking.rating[0];
     const avaliationCount = props.route.params.parking.rating[1];
     const businessHours = props.route.params.parking.businessHours;
