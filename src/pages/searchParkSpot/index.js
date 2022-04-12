@@ -10,13 +10,26 @@ import * as Location from 'expo-location'
 
 export const SearchParkSpot = (props) => {
 
-    console.log(props.route.params)
+    //const [location, setLocation] = useState(null)
+    //const [region, setRegion] = useState({ latitude: 37.78825, longitude: -48.0088149})
+    const [loading, setLoading] = useState(true);
+    const [parkingSpots, setParkingSpots] = useState(null)
+
+    const parkSpotIsEmpty = props.route.params.parkSpotEmpty
     const parkSpots = props.route.params.parkSpots
     const latitudeDelta = 0.002
     const longitudeDelta = 0.002
+    const myquery = query(collection(db, "parking"));
 
-    //var _location = Location.getCurrentPositionAsync({enableHighAccuracy:true})
-    //console.log(_location)
+    async function getParkingSpots() {
+        const markerlist = [];
+        const markersnapshot = await getDocs(myquery);
+        markersnapshot.forEach((doc) => {
+            markerlist.push({...doc.data().parkSpotEmpty, id: doc.id});
+        });
+        setParkingSpots(markerlist)
+        //setLoading(false)
+    }
 
     const calculateDistance = () => {
         var dis = getDistance(
@@ -24,6 +37,17 @@ export const SearchParkSpot = (props) => {
           {latitude: 51.528308, longitude: -0.3817765},
         );
     };
+    
+    // is returning null???
+    useEffect(() => {
+        getParkingSpots()
+        setLoading(false)
+        console.log(parkingSpots)
+    }, [])
+
+    if (loading) {
+        return <ActivityIndicator></ActivityIndicator>
+    }
     
     return(
         <View style={stylesGeneral.container} >   
@@ -41,28 +65,26 @@ export const SearchParkSpot = (props) => {
                     })}
                 loadingEnabled={true}
             >
-                {parkSpots ? parkSpots.map(spot => (
-                    <Marker
+                
+                {parkSpots ? parkSpots.map((spot,index) => {
+                    return parkSpotIsEmpty[index] ?
+                    <Marker key ={index}
                       coordinate={{
                         latitude: spot.latitude,
                         longitude: spot.longitude,
                         latitudeDelta: latitudeDelta,
                         longitudeDelta: longitudeDelta
                       }}
-                      title={"oi"}
-                      description={"Clique aqui para ver mais detalhes"}  
-                      //image={require('../../../assets/app_logo.png')}
-                      //onCalloutPress={() => props.navigation.navigate("TopTabNavigatorParking", {parking})}
-                      >
+                    >
                     </Marker>
-                )) : null}
+                : null}) : null}
 
             </MapView>
 
             <TouchableOpacity style={styles.button1}>
                 <Text 
-                style={stylesGeneral.textButton}
-                //onPress={() => props.navigation.navigate("SearchParkSpot")}
+                    style={stylesGeneral.textButton}
+                    //onPress={() => props.navigation.navigate("SearchParkSpot")}
                 >
                 Pegar Vaga
                 </Text>
@@ -70,8 +92,8 @@ export const SearchParkSpot = (props) => {
             
             <TouchableOpacity style={styles.button2}>
                 <Text 
-                style={stylesGeneral.textButton}
-                //onPress={() => props.navigation.navigate("SearchParkSpot")}
+                    style={stylesGeneral.textButton}
+                    //onPress={() => props.navigation.navigate("SearchParkSpot")}
                 >
                 Liberar Vaga
                 </Text>
@@ -80,13 +102,3 @@ export const SearchParkSpot = (props) => {
         
     );
 }
-/**
- * <TouchableOpacity style={styles.button1}>
-                <Text 
-                style={stylesGeneral.textButton}
-                onPress={() => props.navigation.navigate("SearchParkSpot")}>
-                Pegar Vaga
-                </Text>
-            </TouchableOpacity>
- * 
- */
