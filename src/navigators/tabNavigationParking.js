@@ -9,9 +9,9 @@ const Tab = createMaterialTopTabNavigator();
 
 const TopTabNavigatorParking = ({route}) => {
   const parking = route.params
-  console.log(parking)
+  //console.log(parking)
   const comments = route.params
-  console.log(comments)
+  //console.log(comments)
   return (
     <Tab.Navigator style={{marginTop:30}}>
       <Tab.Screen name="Visão Geral" component={Overview} initialParams={parking} />

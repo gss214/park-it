@@ -5,8 +5,7 @@ import styles from "./style"
 import { Rating } from 'react-native-ratings'
 
 export const Details = (props) => {
-  console.log(props.route.params.parking) 
-
+ 
   function getData() {
     
     const starCount = props.route.params.parking.rating[0];
@@ -65,7 +64,6 @@ export const Details = (props) => {
         <Text style={{alignSelf:'center'}}>Coberto: </Text>
         <Text style={styles.overviewItem}>({getData().isCovered})</Text>
         
-        </View>
-        
+        </View>       
     );
 }
