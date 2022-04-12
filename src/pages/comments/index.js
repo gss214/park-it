@@ -3,26 +3,26 @@ import {View, Text, Image, TouchableOpacity} from "react-native"
 import stylesGeneral from "../../components/style"
 
 export const Comments = (props) => {
-
-  async function Write() {
-        $(function(){
-        $("#form").submit(function(e){
-            // Criando comentario
-            var data = {};
-            data.name = $("#name").val();
-            data.comment = $("#comment").val();
-            var url = "http://www.someurl.com/post_comment.php";
-            $.POST(url, data)
-            .done(function(response){
-                $("#comments").append(response);
-            });
-            e.preventDefault();
-        });
-    });
+  function Read() {
+    const name = props.route.params.comments.name;
+    const rating = props.route.params.comments.rating;
+    const comment = props.route.params.comments.comment;
+   
+    return {
+      'comment': comment,
+      'name': name,
+      'rating': rating
   }
+  
+  function Write() {
+    
+    }
+  }
+
     return(
         <View style={stylesGeneral.container}>
            <Text style={{alignSelf:'center'}}>Comments</Text>
+
            <TouchableOpacity style={stylesGeneral.button}>
            <Text 
              style={stylesGeneral.textButton}

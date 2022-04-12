@@ -13,8 +13,8 @@ const MainStackNavigator = () => {
   return (
     <Stack.Navigator>
       <Stack.Screen 
-        name="TopTabNavigator" 
-        component={TopTabNavigator}
+        name="TopTabNavigatorParking" 
+        component={TopTabNavigatorParking}
         options={{ headerShown: false }}
       />
       <Stack.Screen 
@@ -23,15 +23,16 @@ const MainStackNavigator = () => {
         component={Login}
       />
       <Stack.Screen 
+        name="TopTabNavigator" 
+        component={TopTabNavigator}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen 
         name="Register" 
         options={{ headerShown: false }}
         component={Register}
       />
-      <Stack.Screen 
-        name="TopTabNavigatorParking" 
-        component={TopTabNavigatorParking}
-        options={{ headerShown: false }}
-      />
+      
     </Stack.Navigator>
   );
 }

@@ -22,7 +22,7 @@ export const Login = (props) => {
     await signInWithEmailAndPassword(auth, email, password)
     .then(value => {
       console.log('usuario logado com sucesso! ' + value.user.email);
-      props.navigation.navigate('TopTabNavigator');
+      props.navigation.navigate('TopTabNavigatorParking');
     })
     .catch(error => console.log(error));
   };

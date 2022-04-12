@@ -62,7 +62,11 @@ const styles = StyleSheet.create({
     textAlign: "left",
     paddingLeft: 20,
   },
-
+  container: {
+    flex: 1,
+    backgroundColor: '#e0e5e5',
+    alignItems:'center'
+  },
 });
 
 export default styles;

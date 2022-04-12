@@ -2,10 +2,11 @@ import React from "react"
 import {View, Text, Image, TouchableOpacity} from "react-native"
 import stylesGeneral from "../../components/style"
 import styles from "./style"
+import { Rating } from 'react-native-ratings'
 
 export const Details = (props) => {
 
-  function getFormattedData() {
+  function getData() {
     const starCount = props.route.params.parking.rating[0];
     const avaliationCount = props.route.params.parking.rating[1];
     const businessHours = props.route.params.parking.businessHours;
@@ -32,35 +33,35 @@ export const Details = (props) => {
   }
 
     return(
-        <View style={stylesGeneral.overviewContainer}>
+        <View style={stylesGeneral.container}>
         <Text style={{alignSelf:'center'}}>Endereço: {props.route.params.parking.name} </Text>
-        <Text style={styles.overviewItem}>{getFormattedData().address}</Text>
+        <Text style={styles.overviewItem}>{getData().address}</Text>
         <Text style={{alignSelf:'center'}}>Média de avaliações: </Text>
         <View style={styles.ratingView}>
-          <Text style={styles.rating}>{getFormattedData().avaliation}</Text>
+          <Text style={styles.rating}>{getData().avaliation}</Text>
           <Rating
             style={styles.barRating}
             type='star'
             ratingCount={5}
-            startingValue={getFormattedData().avaliation}
-            imageSize={30}
+            startingValue={getData().avaliation}
+            imageSize={20}
             readonly={true}/>
 
         
-        <Text style={styles.starCount}>({getFormattedData().starCount} )</Text>
+        <Text style={styles.starCount}>({getData().starCount} )</Text>
         </View>
 
         <Text style={{alignSelf:'center'}}>Privado: </Text>
-        <Text style={styles.overviewItem}>({getFormattedData().isPrivate})</Text>
+        <Text style={styles.overviewItem}>({getData().isPrivate})</Text>
         
         <Text style={{alignSelf:'center'}}>Ponto de referência: </Text>
-        <Text style={styles.overviewItem}>({getFormattedData().referencePoint})</Text>
+        <Text style={styles.overviewItem}>({getData().referencePoint})</Text>
         
         <Text style={{alignSelf:'center'}}>Horario de Funcionamento: </Text>
-        <Text style={styles.overviewItem}>({getFormattedData().businessHours})</Text>
+        <Text style={styles.overviewItem}>({getData().businessHours})</Text>
         
         <Text style={{alignSelf:'center'}}>Coberto: </Text>
-        <Text style={styles.overviewItem}>({getFormattedData().isCovered})</Text>
+        <Text style={styles.overviewItem}>({getData().isCovered})</Text>
         
         </View>
         
