@@ -17,7 +17,7 @@ const styles = StyleSheet.create({
 
   overviewItem: {
     width: "100%",
-    fontSize: 16
+    fontSize: 13
   },
   starCount: {
     paddingTop: 15,

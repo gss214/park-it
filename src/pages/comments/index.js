@@ -1,8 +1,13 @@
 import React from "react"
 import {View, Text, Image, TouchableOpacity} from "react-native"
 import stylesGeneral from "../../components/style"
+import styles from './style'
+
 
 export const Comments = (props) => {
+  const [comment, setComment] = useState('');
+  const [rating, setRating] = useState('');
+  
   function Read() {
     const name = props.route.params.comments.name;
     const rating = props.route.params.comments.rating;
