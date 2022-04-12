@@ -1,5 +1,5 @@
 import React, { useState, useEffect} from "react"
-import { View, Text, Image, TouchableOpacity, TouchableWithoutFeedback, TextInput, Keyboard } from "react-native"
+import { View, Text, Image, TouchableOpacity, TouchableWithoutFeedback, TextInput, Keyboard, Alert } from "react-native"
 import * as ImagePicker from 'expo-image-picker';
 import stylesGeneral from "../../components/style"
 import styles from './style'
@@ -115,6 +115,17 @@ export const Profile = (props) => {
                 console.log(error)
             })
         }
+
+        Alert.alert(
+            "Perfil atualizado com sucesso",
+            "Você será redirecionado para a página de vagas",
+            [
+                {text: "Ok",
+                onPress: () => props.navigation.navigate('Vagas'),
+                style: "cancel"
+                }
+            ]
+        )
     }
 
     useEffect(() => {

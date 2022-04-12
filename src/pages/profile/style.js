@@ -7,7 +7,13 @@ const styles = StyleSheet.create({
         overflow:'hidden',
         borderRadius: 150/2,
         shadowColor: 'black',
+        marginRight: 10,
     },
+    rowContanier: {
+        flexDirection:'row',
+        marginLeft: 60,
+        marginTop: 20,
+    }
 });
 
 export default styles;

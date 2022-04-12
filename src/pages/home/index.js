@@ -33,8 +33,8 @@ export const Home = (props) => {
   const longitudeDelta = 0.05
 
   const [location, setLocation] = useState(null)
-  const [marker, setMarker] = useState({ latitude: 37.78825, longitude: -48.0088149 })
-  const [region, setRegion] = useState({ latitude: 37.78825, longitude: -48.0088149})
+  const [marker, setMarker] = useState({ latitude: -15.80825, longitude: -48.0088149 })
+  const [region, setRegion] = useState({ latitude: -15.80825, longitude: -48.0088149})
   const [errorMsg, setErrorMsg] = useState(null)
   const [loading, setLoading] = useState(true);
   const [parkingList, setParkingList] = useState(null)
