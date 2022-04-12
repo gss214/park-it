@@ -13,6 +13,7 @@ const TopTabNavigator = () => {
       <Tab.Screen name="Vagas" component={Home} />
       <Tab.Screen name="Perfil" component={Profile} />
       <Tab.Screen name="Novo Estacionamento" component={CreateParkingLot} />
+      
     </Tab.Navigator>
   );
 };
