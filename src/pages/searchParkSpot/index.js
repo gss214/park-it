@@ -10,42 +10,53 @@ import * as Location from 'expo-location'
 
 export const SearchParkSpot = (props) => {
 
-    //const [location, setLocation] = useState(null)
+    const [location, setLocation] = useState(null)
     //const [region, setRegion] = useState({ latitude: 37.78825, longitude: -48.0088149})
     const [loading, setLoading] = useState(true);
     const [parkingSpots, setParkingSpots] = useState(null)
+    const [emptyParkingSpots,setEmptyParkingSpots] = useState(null)
 
     const parkSpotIsEmpty = props.route.params.parkSpotEmpty
     const parkSpots = props.route.params.parkSpots
     const latitudeDelta = 0.002
     const longitudeDelta = 0.002
-    const myquery = query(collection(db, "parking"));
+    const myquery = query(
+        collection(db, "parking"), 
+        where("name","==",props.route.params.name) 
+    );
 
     async function getParkingSpots() {
-        const markerlist = [];
+        var markerlist = [];
         const markersnapshot = await getDocs(myquery);
         markersnapshot.forEach((doc) => {
-            markerlist.push({...doc.data().parkSpotEmpty, id: doc.id});
+            markerlist.push(...doc.data().parkSpots);
+            //console.log(doc.data())
         });
         setParkingSpots(markerlist)
-        //setLoading(false)
     }
 
-    const calculateDistance = () => {
+    async function getEmptySpots() {
+        var markerlist = [];
+        const markersnapshot = await getDocs(myquery);
+        markersnapshot.forEach((doc) => {
+            markerlist.push(...doc.data().parkSpotEmpty);
+        });
+        setEmptyParkingSpots(markerlist)
+    }
+
+    // fazer um loop com a distancia do usuario e as distancias das vagas
+    // mostrar a localizacao do usuario como um ponto no mapa (carrinho?)
+    const calculateDistance = (spot) => {
         var dis = getDistance(
-          {latitude: 20.0504188, longitude: 64.4139099},
-          {latitude: 51.528308, longitude: -0.3817765},
+          {latitude: spot.latitude, longitude: spot.longitute},
+          {latitude: location.latitude, longitude: location.longitude},
         );
     };
     
-    // is returning null???
-    useEffect(() => {
-        getParkingSpots()
-        setLoading(false)
-        console.log(parkingSpots)
-    }, [])
+    // pesquisar pra ver se tem alguma funcao no bd que retorna se ele foi modificado
+    useEffect(() => {getParkingSpots(), getEmptySpots(), setLoading(false)}, [])
 
-    if (loading) {
+    if (loading || parkingSpots == null || emptyParkingSpots == null) {
         return <ActivityIndicator></ActivityIndicator>
     }
     
@@ -66,8 +77,16 @@ export const SearchParkSpot = (props) => {
                 loadingEnabled={true}
             >
                 
-                {parkSpots ? parkSpots.map((spot,index) => {
-                    return parkSpotIsEmpty[index] ?
+                {/** antes de ver as vagas vazias ja definir qual a vaga mais proxima
+                 *   e ai trocar a cor dessa vaga pra mostrar que eh a mais proxima
+                 *   e colocar na descricao tambem
+                 * 
+                 *   nos botoes pegar vaga e liberar vaga trocar a cor tambem dessa vaga
+                 *   e mudar no bd se ta ocupado ou nao   
+                 */}
+                
+                {parkingSpots ? parkingSpots.map((spot,index) => {
+                    return emptyParkingSpots[index] ?
                     <Marker key ={index}
                       coordinate={{
                         latitude: spot.latitude,
@@ -75,9 +94,11 @@ export const SearchParkSpot = (props) => {
                         latitudeDelta: latitudeDelta,
                         longitudeDelta: longitudeDelta
                       }}
+                      title={index.toString()}
+                      description={index.toString()}
                     >
                     </Marker>
-                : null}) : null}
+                : null }) : null}
 
             </MapView>
 
@@ -102,3 +123,31 @@ export const SearchParkSpot = (props) => {
         
     );
 }
+
+/**
+ * <MapView 
+                style={styles.mapView}
+                initialRegion={({
+                    latitude: props.route.params.coordinates.latitude,
+                    longitude: props.route.params.coordinates.longitude,
+                    latitudeDelta: latitudeDelta,
+                    longitudeDelta: longitudeDelta
+                    })}
+                loadingEnabled={true}
+            >
+                
+                {parkingSpots ? parkingSpots.map((spot,index) => {
+                    return parkSpotIsEmpty[index] ?
+                    <Marker key ={index}
+                      coordinate={{
+                        latitude: spot[index].latitude,
+                        longitude: spot[index].longitude,
+                        latitudeDelta: latitudeDelta,
+                        longitudeDelta: longitudeDelta
+                      }}
+                    >
+                    </Marker>
+                : null}) : null}
+
+            </MapView>
+ **/
