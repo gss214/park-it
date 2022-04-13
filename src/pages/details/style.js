@@ -15,15 +15,18 @@ const styles = StyleSheet.create({
     textAlign: 'center'
   },
 
-  overviewItem: {
+  espaco: {
     width: "100%",
-    fontSize: 13
+    fontSize: 18,
+    paddingBottom: 15
+
   },
   starCount: {
     paddingTop: 15,
   },
   ratingView: {
-    flexDirection:'row'
+    flexDirection:'row',
+    paddingBottom: 15
   },
   photoContainer: {
     flex: 1,

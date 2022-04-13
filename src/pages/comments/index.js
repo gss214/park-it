@@ -27,6 +27,7 @@ export const Comments = (props) => {
     return(
         <View style={stylesGeneral.container}>
            <Text style={{alignSelf:'center'}}>Comments</Text>
+           
 
            <TouchableOpacity style={stylesGeneral.button}>
            <Text 

@@ -34,9 +34,10 @@ export const Details = (props) => {
   }
 
     return(
-        <View style={stylesGeneral.container}>
-        <Text >Endereço: {props.route.params.parking.name} </Text>
-        <Text style={styles.overviewItem}>{getData().address}</Text>
+        <View style={styles.espaco}>
+        <Text >Endereço:  </Text>
+        <Text style={styles.espaco}>{props.route.params.parking.name}{getData().address}</Text>
+
         <Text >Média de avaliações: </Text>
         <View style={styles.ratingView}>
           <Text style={styles.rating}>{getData().avaliation}</Text>
@@ -45,24 +46,22 @@ export const Details = (props) => {
             type='star'
             ratingCount={5}
             startingValue={getData().avaliation}
-            imageSize={20}
+            imageSize={30}
             readonly={true}/>
 
-        
-        <Text style={styles.starCount}>({getData().starCount} )</Text>
         </View>
 
         <Text >Privado: </Text>
-        <Text style={styles.overviewItem}>({getData().isPrivate})</Text>
+        <Text style={styles.espaco}>{getData().isPrivate}</Text>
         
         <Text >Ponto de referência: </Text>
-        <Text style={styles.overviewItem}>({getData().referencePoint})</Text>
+        <Text style={styles.espaco}>{getData().referencePoint}</Text>
         
         <Text >Horario de Funcionamento: </Text>
-        <Text style={styles.overviewItem}>({getData().businessHours})</Text>
+        <Text style={styles.espaco}>{getData().businessHours}</Text>
         
         <Text >Coberto: </Text>
-        <Text style={styles.overviewItem}>({getData().isCovered})</Text>
+        <Text style={styles.espaco}>{getData().isCovered}</Text>
         
         </View>       
     );
