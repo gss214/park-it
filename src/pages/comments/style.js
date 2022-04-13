@@ -14,6 +14,10 @@ const styles = StyleSheet.create({
   text: {
     textAlign: 'center'
   },
+  ratingView: {
+    flexDirection:'row',
+    paddingBottom: 15
+  },
   photoContainer: {
     flex: 1,
     width: '100%',
@@ -28,6 +32,11 @@ const styles = StyleSheet.create({
     borderRadius: 150/2,
     shadowColor: 'black',
   },
+  rowContanier: {
+    flexDirection:'row',
+    marginLeft: 60,
+    marginTop: 20,
+},
   photoContainer: {
     flex: 1,
     width: '100%',
