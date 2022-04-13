@@ -13,16 +13,15 @@ const MainStackNavigator = () => {
   return (
     <Stack.Navigator>
       <Stack.Screen 
+        name="Login" 
+        options={{ headerShown: false }}
+        component={Login}
+      />  
+      <Stack.Screen 
         name="TopTabNavigator" 
         component={TopTabNavigator}
         options={{ headerShown: false }}
       />
-      <Stack.Screen 
-        name="Login" 
-        options={{ headerShown: false }}
-        component={Login}
-      />
-      
       <Stack.Screen 
         name="TopTabNavigatorParking" 
         component={TopTabNavigatorParking}
