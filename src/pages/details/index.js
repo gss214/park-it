@@ -35,9 +35,9 @@ export const Details = (props) => {
 
     return(
         <View style={stylesGeneral.container}>
-        <Text style={{alignSelf:'center'}}>Endereço: {props.route.params.parking.name} </Text>
+        <Text >Endereço: {props.route.params.parking.name} </Text>
         <Text style={styles.overviewItem}>{getData().address}</Text>
-        <Text style={{alignSelf:'center'}}>Média de avaliações: </Text>
+        <Text >Média de avaliações: </Text>
         <View style={styles.ratingView}>
           <Text style={styles.rating}>{getData().avaliation}</Text>
           <Rating
@@ -52,16 +52,16 @@ export const Details = (props) => {
         <Text style={styles.starCount}>({getData().starCount} )</Text>
         </View>
 
-        <Text style={{alignSelf:'center'}}>Privado: </Text>
+        <Text >Privado: </Text>
         <Text style={styles.overviewItem}>({getData().isPrivate})</Text>
         
-        <Text style={{alignSelf:'center'}}>Ponto de referência: </Text>
+        <Text >Ponto de referência: </Text>
         <Text style={styles.overviewItem}>({getData().referencePoint})</Text>
         
-        <Text style={{alignSelf:'center'}}>Horario de Funcionamento: </Text>
+        <Text >Horario de Funcionamento: </Text>
         <Text style={styles.overviewItem}>({getData().businessHours})</Text>
         
-        <Text style={{alignSelf:'center'}}>Coberto: </Text>
+        <Text >Coberto: </Text>
         <Text style={styles.overviewItem}>({getData().isCovered})</Text>
         
         </View>       
