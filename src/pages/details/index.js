@@ -35,20 +35,20 @@ export const Details = (props) => {
 
     return(
         <View style={styles.espaco}>
-        <Text >Endereço:  </Text>
+        <Text style={styles.borda}>Endereço:  </Text>
         <Text style={styles.espaco}>{props.route.params.parking.name}{getData().address}</Text>
 
         <Text >Média de avaliações: </Text>
         <View style={styles.ratingView}>
-          <Text style={styles.rating}>{getData().avaliation}</Text>
+          
           <Rating
             style={styles.barRating}
             type='star'
             ratingCount={5}
             startingValue={getData().avaliation}
-            imageSize={30}
+            imageSize={28}
             readonly={true}/>
-
+            <Text style={styles.rating}>  {getData().avaliation}</Text>
         </View>
 
         <Text >Privado: </Text>

@@ -18,9 +18,15 @@ const styles = StyleSheet.create({
   espaco: {
     width: "100%",
     fontSize: 18,
-    paddingBottom: 15
-
+    paddingBottom: 15,
+    paddingLeft: 20
   },
+
+  borda:{
+    paddingTop: 15,
+   
+  },
+
   starCount: {
     paddingTop: 15,
   },
@@ -48,6 +54,10 @@ const styles = StyleSheet.create({
     height: 'auto',
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  barRating:{
+    paddingLeft: 55,
+    paddingTop: 10
   },
   photoBox: {
     flex: 1,
