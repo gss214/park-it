@@ -40,30 +40,30 @@ export const Comments = (props) => {
     return {
       'comment': comment,
       'starCount': starCount
-     
-  }
-  
-    function Write() {
-      var string = "";
-      var star;
-      <View style={styles.containerForm}>
-        <TextInput
-          style={stylesGeneral.input}
-          placeholder="Coloque um número de 0 a 5"
-          keyboardType='default'
-          value={star}
-          onChangeText={(star) => star}>
-        </TextInput>
-
-        <TextInput
-          style={stylesGeneral.input}
-          placeholder="Comentário"
-          keyboardType='default'
-          value={string}
-          onChangeText={(string) => string}>
-        </TextInput>
-      </View>
+    
     }
+  }
+
+  function Write() {
+    var string = "";
+    var star;
+    <View style={styles.containerForm}>
+      <TextInput
+        style={stylesGeneral.input}
+        placeholder="Coloque um número de 0 a 5"
+        keyboardType='default'
+        value={star}
+        onChangeText={(star) => star}>
+      </TextInput>
+
+      <TextInput
+        style={stylesGeneral.input}
+        placeholder="Comentário"
+        keyboardType='default'
+        value={string}
+        onChangeText={(string) => string}>
+      </TextInput>
+    </View>
   }
 
   useEffect(() => {
