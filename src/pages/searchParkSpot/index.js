@@ -11,15 +11,15 @@ import * as Location from 'expo-location'
 export const SearchParkSpot = (props) => {
 
     const [location, setLocation] = useState(null)
-    //const [region, setRegion] = useState({ latitude: 37.78825, longitude: -48.0088149})
+    const [region, setRegion] = useState({ latitude: 37.78825, longitude: -48.0088149})
     const [loading, setLoading] = useState(true);
     const [parkingSpots, setParkingSpots] = useState(null)
     const [emptyParkingSpots,setEmptyParkingSpots] = useState(null)
-
-    const parkSpotIsEmpty = props.route.params.parkSpotEmpty
-    const parkSpots = props.route.params.parkSpots
+    const [closestParkingSpot, setClosestParkingSpot] = useState(null)
+    
     const latitudeDelta = 0.002
     const longitudeDelta = 0.002
+    
     const myquery = query(
         collection(db, "parking"), 
         where("name","==",props.route.params.name) 
@@ -30,9 +30,21 @@ export const SearchParkSpot = (props) => {
         const markersnapshot = await getDocs(myquery);
         markersnapshot.forEach((doc) => {
             markerlist.push(...doc.data().parkSpots);
-            //console.log(doc.data())
         });
         setParkingSpots(markerlist)
+        return markerlist
+    }
+
+    async function getLocation(){
+        let _location = await Location.getCurrentPositionAsync({enableHighAccuracy:true})
+        setLocation({
+            latitude: _location.coords.latitude,
+            longitude: _location.coords.longitude,
+            latitudeDelta: latitudeDelta,
+            longitudeDelta: longitudeDelta
+        })
+        setRegion(location)
+        return _location
     }
 
     async function getEmptySpots() {
@@ -44,19 +56,74 @@ export const SearchParkSpot = (props) => {
         setEmptyParkingSpots(markerlist)
     }
 
-    // fazer um loop com a distancia do usuario e as distancias das vagas
-    // mostrar a localizacao do usuario como um ponto no mapa (carrinho?)
+    /*function getRegion(){
+        let minX, maxX, minY, maxY;
+
+        minX = Math.min(closestParkingSpot.latitude, location.latitude);
+        maxX = Math.max(closestParkingSpot.latitude, location.latitude);
+        minY = Math.min(closestParkingSpot.latitude, location.latitude);
+        maxY = Math.max(closestParkingSpot.latitude, location.latitude);
+        
+        const midX = (minX + maxX) / 2, midY = (minY + maxY) / 2;
+        const deltaX = (maxX - minX), deltaY = (maxY - minY);
+
+        setRegion({
+            latitude: midX,
+            longitude: midY,
+            latitudeDelta: deltaX,
+            longitudeDelta: deltaY
+        })
+    }*/
+
     const calculateDistance = (spot) => {
         var dis = getDistance(
           {latitude: spot.latitude, longitude: spot.longitute},
           {latitude: location.latitude, longitude: location.longitude},
         );
+        return dis;
     };
+
+    async function getClosestParkingSpot() {
+        await getLocation()
+        await getParkingSpots()
+
+        console.log(location)
+        console.log(parkingSpots)
+
+        var minDist = -1, closestSpot = null;
+        parkingSpots.map((spot) => {
+            if(minDist == -1){
+                minDist = calculateDistance(spot); closestSpot = spot;
+            } 
+            else{
+                let auxDist = calculateDistance(spot)
+                if(auxDist < minDist){
+                    minDist = auxDist; closestSpot = spot;
+                }
+            }  
+        })
+        return closestSpot;
+    }
+
+    // fazer um loop com a distancia do usuario e as distancias das vagas
+    // mostrar a localizacao do usuario como um ponto no mapa (carrinho?)
     
     // pesquisar pra ver se tem alguma funcao no bd que retorna se ele foi modificado
-    useEffect(() => {getParkingSpots(), getEmptySpots(), setLoading(false)}, [])
+    useEffect(() => {
+        //getParkingSpots(), 
+        getEmptySpots(), 
+        getClosestParkingSpot()
+    }, [])
 
-    if (loading || parkingSpots == null || emptyParkingSpots == null) {
+   /* useEffect(() => {
+        getRegion(),
+        setLoading(false)
+    }, [closestParkingSpot, location])*/
+
+    //if(parkingSpots != null && location != null) getClosestParkingSpot();
+    //if(location != null && closestParkingSpot != null) getRegion();
+
+    if (loading || parkingSpots == null || emptyParkingSpots == null || closestParkingSpot == null){ // || closestParkingSpot == null || location == null || region == null) {
         return <ActivityIndicator></ActivityIndicator>
     }
     
@@ -88,14 +155,15 @@ export const SearchParkSpot = (props) => {
                 {parkingSpots ? parkingSpots.map((spot,index) => {
                     return emptyParkingSpots[index] ?
                     <Marker key ={index}
-                      coordinate={{
-                        latitude: spot.latitude,
-                        longitude: spot.longitude,
-                        latitudeDelta: latitudeDelta,
-                        longitudeDelta: longitudeDelta
-                      }}
-                      title={index.toString()}
-                      description={index.toString()}
+                        pinColor={'green'}
+                        coordinate={{
+                            latitude: spot.latitude,
+                            longitude: spot.longitude,
+                            latitudeDelta: latitudeDelta,
+                            longitudeDelta: longitudeDelta
+                        }}
+                        title={index.toString()}
+                        description={index.toString()}
                     >
                     </Marker>
                 : null }) : null}
@@ -123,31 +191,3 @@ export const SearchParkSpot = (props) => {
         
     );
 }
-
-/**
- * <MapView 
-                style={styles.mapView}
-                initialRegion={({
-                    latitude: props.route.params.coordinates.latitude,
-                    longitude: props.route.params.coordinates.longitude,
-                    latitudeDelta: latitudeDelta,
-                    longitudeDelta: longitudeDelta
-                    })}
-                loadingEnabled={true}
-            >
-                
-                {parkingSpots ? parkingSpots.map((spot,index) => {
-                    return parkSpotIsEmpty[index] ?
-                    <Marker key ={index}
-                      coordinate={{
-                        latitude: spot[index].latitude,
-                        longitude: spot[index].longitude,
-                        latitudeDelta: latitudeDelta,
-                        longitudeDelta: longitudeDelta
-                      }}
-                    >
-                    </Marker>
-                : null}) : null}
-
-            </MapView>
- **/
