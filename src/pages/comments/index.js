@@ -6,29 +6,59 @@ import * as ImagePicker from 'expo-image-picker';
 import { auth, db} from "../../../firebase"
 import {updatePassword } from "firebase/auth";
 import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
-import {ActivityIndicator, View, Text, Image, TouchableOpacity} from "react-native"
+import {ActivityIndicator, TextInput, View, Text, Image, TouchableOpacity,TouchableWithoutFeedback} from "react-native"
 import MapView, { Marker } from 'react-native-maps'
 import { collection, getDocs, query, where } from "firebase/firestore";
 
 
 export const Comments = (props) => {
 
+    const id=props.route.params.parking.id
+    //console.log(id)
     const [comments, setComments] = useState(null)
+    const [ratinglist, setRatings] = useState('')
+    const [commentlist, setMensage] = useState('')
+    const [namelist, setName] = useState('');
+
     const myquery = query(
         collection(db, "comments"), 
-        console.log(props.route.params),
-        where('parkID',"==",props.route.params[1]) 
+        //console.log(props.route.params.id),
+        where('parkID',"==",id) 
         
     );
 
+    
+
     async function getComments() {
         var commentslist = [];
+        var namelist = [];
+        var ratinglist = [];
+        var commentlist = [];
+        var count=0;
         const commentssnapshot = await getDocs(myquery);
         commentssnapshot.forEach((doc) => {
+            const data = doc.data()
             commentslist.push(...doc.data());
             console.log(doc.data())
+            React.useEffect(() => {
+              setName(data.name);
+            }, [count]);
+            React.useEffect(() => {
+              setRatings(data.rating);
+            }, [count]);
+            React.useEffect(() => {
+              setMensage(data.comment);
+            }, [count]);
+
+            //namelist[count]=data.name
+            //ratinglist[count]=data.rating
+            //commentlist[count]=data.comment
+            count++
         });
         setComments(commentslist)
+        //setRatings(ratinglist)
+        //setMensage(commentlist)
+        //setName(namelist)
     }
 /*
     async function getCurrentUserData() {
@@ -83,8 +113,18 @@ export const Comments = (props) => {
       <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
         <View style={styles.containerForm}>
           <View style={styles.rowContanier}> 
-           
-         
+          <TextInput  style={stylesGeneral.input}
+                      placeholder="Comment"
+                      keyboardType='default'
+                      Text={getComments()}>
+          </TextInput>
+          <TextInput
+                    style={stylesGeneral.input}
+                    placeholder="Nome"
+                    keyboardType='default'
+                    value={namelist}
+                    onChangeText={(namelist) => setName(namelist)}>
+                </TextInput>
           
          </View>
         </View>
