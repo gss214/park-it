@@ -5,35 +5,23 @@ import styles from "./style"
 import MapView, { Marker } from 'react-native-maps'
 import { db } from "../../../firebase";
 import { collection, getDocs, query, where } from "firebase/firestore";
-import {getDistance} from 'geolib';
+import {getPreciseDistance} from 'geolib';
 import * as Location from 'expo-location'
 
 export const SearchParkSpot = (props) => {
 
     const [location, setLocation] = useState(null)
-    const [region, setRegion] = useState({ latitude: 37.78825, longitude: -48.0088149})
-    const [loading, setLoading] = useState(true);
+    const [loaded, setLoaded] = useState(false);
     const [parkingSpots, setParkingSpots] = useState(null)
     const [emptyParkingSpots,setEmptyParkingSpots] = useState(null)
     const [closestParkingSpot, setClosestParkingSpot] = useState(null)
-    
+
     const latitudeDelta = 0.002
     const longitudeDelta = 0.002
-    
     const myquery = query(
         collection(db, "parking"), 
         where("name","==",props.route.params.name) 
     );
-
-    async function getParkingSpots() {
-        var markerlist = [];
-        const markersnapshot = await getDocs(myquery);
-        markersnapshot.forEach((doc) => {
-            markerlist.push(...doc.data().parkSpots);
-        });
-        setParkingSpots(markerlist)
-        return markerlist
-    }
 
     async function getLocation(){
         let _location = await Location.getCurrentPositionAsync({enableHighAccuracy:true})
@@ -43,8 +31,15 @@ export const SearchParkSpot = (props) => {
             latitudeDelta: latitudeDelta,
             longitudeDelta: longitudeDelta
         })
-        setRegion(location)
-        return _location
+    }
+
+    async function getParkingSpots() {
+        var markerlist = [];
+        const markersnapshot = await getDocs(myquery);
+        markersnapshot.forEach((doc) => {
+            markerlist.push(...doc.data().parkSpots);
+        });
+        setParkingSpots(markerlist)
     }
 
     async function getEmptySpots() {
@@ -56,40 +51,18 @@ export const SearchParkSpot = (props) => {
         setEmptyParkingSpots(markerlist)
     }
 
-    /*function getRegion(){
-        let minX, maxX, minY, maxY;
-
-        minX = Math.min(closestParkingSpot.latitude, location.latitude);
-        maxX = Math.max(closestParkingSpot.latitude, location.latitude);
-        minY = Math.min(closestParkingSpot.latitude, location.latitude);
-        maxY = Math.max(closestParkingSpot.latitude, location.latitude);
-        
-        const midX = (minX + maxX) / 2, midY = (minY + maxY) / 2;
-        const deltaX = (maxX - minX), deltaY = (maxY - minY);
-
-        setRegion({
-            latitude: midX,
-            longitude: midY,
-            latitudeDelta: deltaX,
-            longitudeDelta: deltaY
-        })
-    }*/
+    const PI_RAD = Math.PI / 180.0;
 
     const calculateDistance = (spot) => {
-        var dis = getDistance(
-          {latitude: spot.latitude, longitude: spot.longitute},
-          {latitude: location.latitude, longitude: location.longitude},
-        );
-        return dis;
-    };
+        var phi1 = spot.latitude * PI_RAD;
+        var phi2 = location.latitude * PI_RAD;
+        var lam1 = spot.longitude * PI_RAD;
+        var lam2 = location.longitude * PI_RAD;
 
-    async function getClosestParkingSpot() {
-        await getLocation()
-        await getParkingSpots()
+        return 6371.01 * Math.acos(Math.sin(phi1) * Math.sin(phi2) + Math.cos(phi1) * Math.cos(phi2) * Math.cos(lam2 - lam1)) * 1000;
+    }
 
-        console.log(location)
-        console.log(parkingSpots)
-
+    function getClosestParkingSpot() {
         var minDist = -1, closestSpot = null;
         parkingSpots.map((spot) => {
             if(minDist == -1){
@@ -100,30 +73,23 @@ export const SearchParkSpot = (props) => {
                 if(auxDist < minDist){
                     minDist = auxDist; closestSpot = spot;
                 }
-            }  
+            } 
         })
-        return closestSpot;
+        setClosestParkingSpot(closestSpot)
     }
-
-    // fazer um loop com a distancia do usuario e as distancias das vagas
-    // mostrar a localizacao do usuario como um ponto no mapa (carrinho?)
     
-    // pesquisar pra ver se tem alguma funcao no bd que retorna se ele foi modificado
     useEffect(() => {
-        //getParkingSpots(), 
-        getEmptySpots(), 
-        getClosestParkingSpot()
+        getParkingSpots() 
+        getEmptySpots()
+        getLocation()
     }, [])
 
-   /* useEffect(() => {
-        getRegion(),
-        setLoading(false)
-    }, [closestParkingSpot, location])*/
-
-    //if(parkingSpots != null && location != null) getClosestParkingSpot();
-    //if(location != null && closestParkingSpot != null) getRegion();
-
-    if (loading || parkingSpots == null || emptyParkingSpots == null || closestParkingSpot == null){ // || closestParkingSpot == null || location == null || region == null) {
+    if (parkingSpots == null || emptyParkingSpots == null || location == null) {
+        return <ActivityIndicator></ActivityIndicator>
+    }
+    
+    if(closestParkingSpot == null){ 
+        getClosestParkingSpot()
         return <ActivityIndicator></ActivityIndicator>
     }
     
@@ -141,35 +107,39 @@ export const SearchParkSpot = (props) => {
                     latitudeDelta: latitudeDelta,
                     longitudeDelta: longitudeDelta
                     })}
-                loadingEnabled={true}
-            >
-                
-                {/** antes de ver as vagas vazias ja definir qual a vaga mais proxima
-                 *   e ai trocar a cor dessa vaga pra mostrar que eh a mais proxima
-                 *   e colocar na descricao tambem
-                 * 
-                 *   nos botoes pegar vaga e liberar vaga trocar a cor tambem dessa vaga
-                 *   e mudar no bd se ta ocupado ou nao   
-                 */}
+                loadingEnabled={true}>
                 
                 {parkingSpots ? parkingSpots.map((spot,index) => {
-                    return emptyParkingSpots[index] ?
-                    <Marker key ={index}
-                        pinColor={'green'}
-                        coordinate={{
-                            latitude: spot.latitude,
-                            longitude: spot.longitude,
-                            latitudeDelta: latitudeDelta,
-                            longitudeDelta: longitudeDelta
-                        }}
-                        title={index.toString()}
-                        description={index.toString()}
-                    >
-                    </Marker>
-                : null }) : null}
+                    if(spot == closestParkingSpot){
+                        return <Marker key ={index}
+                            pinColor={'gold'}
+                            coordinate={{
+                                latitude: spot.latitude,
+                                longitude: spot.longitude,
+                                latitudeDelta: latitudeDelta,
+                                longitudeDelta: longitudeDelta
+                            }}
+                            title={'Vaga mais próxima!'}
+                        ></Marker>
+                    }
+                    else if(emptyParkingSpots[index]){
+                        return <Marker key ={index}
+                            coordinate={{
+                                latitude: spot.latitude,
+                                longitude: spot.longitude,
+                                latitudeDelta: latitudeDelta,
+                                longitudeDelta: longitudeDelta
+                            }}
+                        ></Marker>
+                    }
+                    else{
+                        return null
+                    }
+                }) : null}
 
             </MapView>
 
+            {/* implementar os botoes e se sobrar tempo mostrar a localizacao da pessoa no mapa tambem*/}
             <TouchableOpacity style={styles.button1}>
                 <Text 
                     style={stylesGeneral.textButton}
