@@ -19,7 +19,7 @@ export const Comments = (props) => {
     const [ratinglist, setRatings] = useState('')
     const [commentlist, setMensage] = useState('')
     const [namelist, setName] = useState('');
-
+    var count;
     const myquery = query(
         collection(db, "comments"), 
         //console.log(props.route.params.id),
@@ -27,14 +27,14 @@ export const Comments = (props) => {
         
     );
 
-    
 
     async function getComments() {
         var commentslist = [];
         var namelist = [];
         var ratinglist = [];
         var commentlist = [];
-        var count=0;
+        count=0;
+
         const commentssnapshot = await getDocs(myquery);
         commentssnapshot.forEach((doc) => {
             const data = doc.data()
@@ -59,30 +59,11 @@ export const Comments = (props) => {
         //setRatings(ratinglist)
         //setMensage(commentlist)
         //setName(namelist)
+        console.log(commentslist)
+        return commentslist
     }
+
 /*
-    async function getCurrentUserData() {
-      const users = collection(db, 'users')
-      const userId = auth.currentUser.uid
-      const user = query(users, where('userUid', '==', userId))
-
-
-      await getDocs(user).then(querySnapshot => {
-          
-          querySnapshot.forEach((doc) => {
-              const data = doc.data()
-
-              const profileImage = data.profileImage    
-              if(profileImage !== null && typeof profileImage !== "undefined") {
-                  setSelectedImage(profileImage)
-                  }
-          })}).catch(error => {
-              console.log(error)
-          }) 
-     }
-  const [selectedImage, setSelectedImage] = useState(null);
-
-
   function Write() {
     var string = "";
     var star;
@@ -113,19 +94,19 @@ export const Comments = (props) => {
       <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
         <View style={styles.containerForm}>
           <View style={styles.rowContanier}> 
-          <TextInput  style={stylesGeneral.input}
-                      placeholder="Comment"
-                      keyboardType='default'
-                      Text={getComments()}>
-          </TextInput>
+          
           <TextInput
                     style={stylesGeneral.input}
                     placeholder="Nome"
                     keyboardType='default'
                     value={namelist}
                     onChangeText={(namelist) => setName(namelist)}>
-                </TextInput>
-          
+          </TextInput>
+          <TextInput  style={stylesGeneral.input}
+                      placeholder="Comment"
+                      keyboardType='default'
+                      Text={getComments()}>
+          </TextInput>
          </View>
         </View>
       </TouchableWithoutFeedback>
