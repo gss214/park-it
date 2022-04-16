@@ -6,6 +6,7 @@ import { TopTabNavigatorParking } from "./tabNavigationParking"
 
 import { Login } from '../pages/login'
 import { Register } from '../pages/register'
+import { NewComment } from '../pages/newComment'
 
 const Stack = createNativeStackNavigator()
 
@@ -32,7 +33,13 @@ const MainStackNavigator = () => {
         options={{ headerShown: false }}
         component={Register}
       />
-      
+       <Stack.Screen 
+        name="NewComment" 
+        options={{
+          title: "Adicionar Comentário"
+        }}
+        component={NewComment}
+      />
     </Stack.Navigator>
   );
 }

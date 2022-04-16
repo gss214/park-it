@@ -19,11 +19,8 @@ export const Overview = (props) => {
       avaliation = starCount / avaliationCount
 
     const isPrivate = props.route.params.parking.isPrivate ? "Estacionamento Privado" : "Estacionamento Público"
-
-
     var address = props.route.params.parking.address
 
- 
     return {
       'parkingName': parkingName,
       'address': address,
@@ -32,8 +29,6 @@ export const Overview = (props) => {
       'isPrivate': isPrivate,
     }
   }
-
-
 
   return (
     <View style={stylesGeneral.container}>
