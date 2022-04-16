@@ -1,123 +1,98 @@
 import React, { useState, useEffect} from "react"
+import SeeMore from 'react-native-see-more-inline';
 import stylesGeneral from "../../components/style"
 import styles from './style'
 import { Rating } from 'react-native-ratings'
-import * as ImagePicker from 'expo-image-picker';
-import { auth, db} from "../../../firebase"
-import {updatePassword } from "firebase/auth";
-import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
-import {ActivityIndicator, TextInput, View, Text, Image, TouchableOpacity,TouchableWithoutFeedback} from "react-native"
-import MapView, { Marker } from 'react-native-maps'
+import { db} from "../../../firebase"
+import {ActivityIndicator, View, Text, FlatList, Keyboard, Image, TouchableOpacity, TouchableWithoutFeedback} from "react-native"
 import { collection, getDocs, query, where } from "firebase/firestore";
+import { useIsFocused } from "@react-navigation/native";
+import { setStatusBarNetworkActivityIndicatorVisible } from "expo-status-bar";
 
 
 export const Comments = (props) => {
 
-    const id=props.route.params.parking.id
-    //console.log(id)
+    const id = props.route.params.parking.id
+    const isFocused = useIsFocused()
     const [comments, setComments] = useState(null)
-    const [ratinglist, setRatings] = useState('')
-    const [commentlist, setMensage] = useState('')
-    const [namelist, setName] = useState('');
-    var count;
+    const [loading, setLoading] = useState(true)
+    const [users, setUsers] = useState(null)
+    
     const myquery = query(
         collection(db, "comments"), 
-        //console.log(props.route.params.id),
-        where('parkID',"==",id) 
-        
+        where("parkingId","==",id) 
     );
 
-
     async function getComments() {
-        var commentslist = [];
-        var namelist = [];
-        var ratinglist = [];
-        var commentlist = [];
-        count=0;
-
+        const commentslist = [];
         const commentssnapshot = await getDocs(myquery);
         commentssnapshot.forEach((doc) => {
-            const data = doc.data()
-            commentslist.push(...doc.data());
-            console.log(doc.data())
-            React.useEffect(() => {
-              setName(data.name);
-            }, [count]);
-            React.useEffect(() => {
-              setRatings(data.rating);
-            }, [count]);
-            React.useEffect(() => {
-              setMensage(data.comment);
-            }, [count]);
-
-            //namelist[count]=data.name
-            //ratinglist[count]=data.rating
-            //commentlist[count]=data.comment
-            count++
+            commentslist.push({...doc.data(), key: doc.id});
         });
         setComments(commentslist)
-        //setRatings(ratinglist)
-        //setMensage(commentlist)
-        //setName(namelist)
-        console.log(commentslist)
-        return commentslist
-    }
-
-/*
-  function Write() {
-    var string = "";
-    var star;
-    <View style={styles.containerForm}>
-      <TextInput
-        style={stylesGeneral.input}
-        placeholder="Coloque um número de 0 a 5"
-        keyboardType='default'
-        value={star}
-        onChangeText={(star) => star}>
-      </TextInput>
-
-      <TextInput
-        style={stylesGeneral.input}
-        placeholder="Comentário"
-        keyboardType='default'
-        value={string}
-        onChangeText={(string) => string}>
-      </TextInput>
-    </View>
-  }*/
+        //console.log(comments)
+      }
+      
+    async function getUsers() {
+      const users = []
+      const snapshot = await getDocs(query(
+        collection(db, "users")))
+        snapshot.forEach((doc) => {
+          users.push({...doc.data(), key: doc.id})
+      });
+      setUsers(users)   
+  }
 
   useEffect(() => {
     getComments()
-  }, [])
+    getUsers()
+    setLoading(false)
+  }, [isFocused])
+
+  function checkUser(userId){
+    let name = ""
+    users.map((_user) => 
+      {if (userId.localeCompare(_user.userUid) == 0){
+        name = _user.name
+      }});
+    return name  
+  }
+
+  if (loading || users == null){
+    return <ActivityIndicator></ActivityIndicator>
+  }
 
     return(
       <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
         <View style={styles.containerForm}>
-          <View style={styles.rowContanier}> 
-          
-          <TextInput
-                    style={stylesGeneral.input}
-                    placeholder="Nome"
-                    keyboardType='default'
-                    value={namelist}
-                    onChangeText={(namelist) => setName(namelist)}>
-          </TextInput>
-          <TextInput  style={stylesGeneral.input}
-                      placeholder="Comment"
-                      keyboardType='default'
-                      Text={getComments()}>
-          </TextInput>
-         </View>
+          <FlatList
+            data={comments}
+            keyExtractor={(item) => item.key}
+            renderItem={({ item }) => (
+              <View style={styles.containerForm}>
+                <TouchableOpacity style={styles.card}>
+                  <Text>Usuário: {checkUser(item.userId)}</Text>
+                  <SeeMore numberOfLines={3} seeLessText='Leia mais'>
+                    {item.comment}
+                  </SeeMore>
+                  <Rating
+                    style={styles.barRating}
+                    type='star'
+                    ratingCount={5}
+                    startingValue={item.rating}
+                    imageSize={30}
+                    readonly={true}/>
+                </TouchableOpacity>
+              </View>
+            )}
+          />
+           <TouchableOpacity 
+              style={stylesGeneral.button}
+              onPress={() => props.navigation.navigate('NewComment', props.route.params.parking.id)}>
+                <Text style={{fontSize: 15, color: '#FFFFFF'}}> Adicionar Comentário </Text>
+            </TouchableOpacity>
         </View>
+        
       </TouchableWithoutFeedback>
     );
 }
-/*
-<TouchableOpacity style={stylesGeneral.button}>
-<Text 
-  style={stylesGeneral.textButton}
-  onPress={() => Write()}
-  >
-  Adicionar Comentário
-</Text>
-</TouchableOpacity>*/

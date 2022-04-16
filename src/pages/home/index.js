@@ -12,8 +12,7 @@ import * as Location from 'expo-location'
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete'
 
 import { signOut } from "firebase/auth"
-import { auth } from "../../../firebase"
-import { db } from "../../../firebase";
+import { db, auth } from "../../../firebase";
 import { collection, getDocs, query, where } from "firebase/firestore";
 
 export const Home = (props) => {
