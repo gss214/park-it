@@ -14,6 +14,17 @@ const styles = StyleSheet.create({
   text: {
     textAlign: 'center'
   },
+
+  overviewItem: {
+    width: "100%",
+    fontSize: 16
+  },
+  starCount: {
+    paddingTop: 15,
+  },
+  ratingView: {
+    flexDirection: 'row'
+  },
   photoContainer: {
     flex: 1,
     width: '100%',
@@ -45,6 +56,16 @@ const styles = StyleSheet.create({
     height: 128,
     elevation: 5,
     shadowColor: 'black',
+  },
+  overviewContainer: {
+    width: "100%",
+    textAlign: "left",
+    paddingLeft: 20,
+  },
+  container: {
+    flex: 1,
+    backgroundColor: '#e0e5e5',
+    alignItems: 'center'
   },
 });
 

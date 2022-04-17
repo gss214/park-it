@@ -9,8 +9,8 @@ LogBox.ignoreLogs(['Setting a timer', 'AsyncStorage'])
 export default function App() {
   return (
     <View style={stylesGeneral.container}>
-       <NavigationContainer>
-         <MainStackNavigator />
+      <NavigationContainer>
+        <MainStackNavigator />
       </NavigationContainer>
     </View>
   );

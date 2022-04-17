@@ -14,6 +14,26 @@ const styles = StyleSheet.create({
   text: {
     textAlign: 'center'
   },
+
+  espaco: {
+    width: "100%",
+    fontSize: 18,
+    paddingBottom: 15,
+    paddingLeft: 20
+  },
+
+  borda: {
+    paddingTop: 15,
+
+  },
+
+  starCount: {
+    paddingTop: 15,
+  },
+  ratingView: {
+    flexDirection: 'row',
+    paddingBottom: 15
+  },
   photoContainer: {
     flex: 1,
     width: '100%',
@@ -35,6 +55,10 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
+  barRating: {
+    paddingLeft: 55,
+    paddingTop: 10
+  },
   photoBox: {
     flex: 1,
     alignItems: 'center',
@@ -45,6 +69,16 @@ const styles = StyleSheet.create({
     height: 128,
     elevation: 5,
     shadowColor: 'black',
+  },
+  overviewContainer: {
+    width: "100%",
+    textAlign: "left",
+    paddingLeft: 20,
+  },
+  container: {
+    flex: 1,
+    backgroundColor: '#e0e5e5',
+    alignItems: 'center'
   },
 });
 

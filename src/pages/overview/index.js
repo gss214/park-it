@@ -1,23 +1,44 @@
 import React from "react"
-import {View, Text, Image, TouchableOpacity} from "react-native"
+import { View, Text, TouchableOpacity } from "react-native"
 import stylesGeneral from "../../components/style"
 import styles from "./style"
 import MapView, { Marker } from 'react-native-maps'
+import { Rating } from 'react-native-ratings'
 
 export const Overview = (props) => {
   const latitudeDelta = 0.002
   const longitudeDelta = 0.002
 
-  return(
+  function getFormattedData() {
+    const parkingName = props.route.params.parking.name
+    const starCount = props.route.params.parking.rating[0];
+    const avaliationCount = props.route.params.parking.rating[1];
+    var avaliation = 0
+    if (avaliationCount != 0)
+      avaliation = starCount / avaliationCount
+
+    const isPrivate = props.route.params.parking.isPrivate ? "Estacionamento Privado" : "Estacionamento Público"
+    var address = props.route.params.parking.address
+
+    return {
+      'parkingName': parkingName,
+      'address': address,
+      'avaliation': avaliation,
+      'starCount': starCount,
+      'isPrivate': isPrivate,
+    }
+  }
+
+  return (
     <View style={stylesGeneral.container}>
-      <MapView 
+      <MapView
         style={styles.mapView}
         initialRegion={({
           latitude: props.route.params.parking.coordinates.latitude,
           longitude: props.route.params.parking.coordinates.longitude,
           latitudeDelta: latitudeDelta,
           longitudeDelta: longitudeDelta
-          })}
+        })}
         loadingEnabled={true}
       >
         <Marker
@@ -29,7 +50,8 @@ export const Overview = (props) => {
           }}
           title={props.route.params.parking.name}
           image={require('../../../assets/app_logo.png')}
-          ></Marker>
+        >
+        </Marker>
       </MapView>
       <TouchableOpacity style={stylesGeneral.button}>
         <Text 
@@ -38,10 +60,24 @@ export const Overview = (props) => {
           Procurar Vaga
         </Text>
       </TouchableOpacity>
-      <Text style={{alignSelf:'center'}}>Nome do Estacionamento: {props.route.params.parking.name} </Text>
-      <Text style={{alignSelf:'center'}}>Média de avaliações:</Text>
-      <Text style={{alignSelf:'center'}}>Privado: </Text>
-      <Text style={{alignSelf:'center'}}>Ponto de referência: </Text>
+      <View style={styles.overviewContainer}>
+        <Text style={styles.parkingTitle}>{getFormattedData().parkingName}</Text>
+        <Text style={styles.overviewItem}>{getFormattedData().address}</Text>
+        <View style={styles.ratingView}>
+          <Text style={styles.rating}>{getFormattedData().avaliation}</Text>
+          <Rating
+            style={styles.barRating}
+            type='star'
+            ratingCount={5}
+            startingValue={getFormattedData().avaliation}
+            imageSize={30}
+            readonly={true} />
+          <Text style={styles.starCount}>({getFormattedData().starCount} avaliações)</Text>
+        </View>
+
+        <Text style={styles.isPrivate}>{getFormattedData().isPrivate}</Text>
+
+      </View>
     </View>
   );
 }
