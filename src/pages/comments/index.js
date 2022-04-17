@@ -88,7 +88,7 @@ export const Comments = (props) => {
         />
         <TouchableOpacity
           style={stylesGeneral.button}
-          onPress={() => props.navigation.navigate('NewComment', props.route.params.parking.id)}>
+          onPress={() => props.navigation.navigate('NewComment', props.route.params.parking)}>
           <Text style={{ fontSize: 15, color: '#FFFFFF' }}> Adicionar Comentário </Text>
         </TouchableOpacity>
       </View>

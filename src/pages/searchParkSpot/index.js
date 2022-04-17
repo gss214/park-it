@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react"
+import React, { useState, useEffect } from "react"
 import { ActivityIndicator, View, Text, Image, TouchableOpacity } from "react-native"
 import stylesGeneral from "../../components/style"
 import styles from "./style"
