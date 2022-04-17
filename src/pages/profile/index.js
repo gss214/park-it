@@ -1,58 +1,14 @@
 import React, { useState, useEffect} from "react"
 import { View, Text, Image, TouchableOpacity, TouchableWithoutFeedback, TextInput, Keyboard, Alert } from "react-native"
-import * as ImagePicker from 'expo-image-picker';
 import stylesGeneral from "../../components/style"
 import styles from './style'
 import { auth, db} from "../../../firebase"
 import { collection, getDocs, query, where, updateDoc, doc} from "@firebase/firestore";
 import {updatePassword } from "firebase/auth";
-import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
-
+import { openImagePickerAsync, uploadImage } from '../../components/imagePicker'
 
 export const Profile = (props) => {
-    let openImagePickerAsync = async () => {
-        setUpdateProfilePictureFlag(true)
-        let permissionResult = await ImagePicker.requestMediaLibraryPermissionsAsync();
-        if (permissionResult.granted === false) {
-            alert("Permission to access camera roll is required!");
-            return;
-        }
-        let pickerResult = await ImagePicker.launchImageLibraryAsync();
-        if (pickerResult.cancelled === true) {
-            return;
-        }
-        setSelectedImage(pickerResult.uri);
-    }
-
-    const uploadImage = async (id) => {
-        const uploadUri = selectedImage;
-        const uriSplit = uploadUri.split('.');
-        const fileExtension = uriSplit[uriSplit.length - 1];
     
-        const response = await fetch(uploadUri);
-        const blob = await response.blob(); 
-    
-        const storage = getStorage();
-        const storageRef = ref(storage);
-        const imageRef = ref(storageRef, `userProfilePictures/${id}.${fileExtension}`);
-    
-        uploadBytes(imageRef, blob).then((snapshot) => {
-          console.log('Uploaded a blob or file!');
-          getDownloadURL(imageRef)
-          .then(async url =>  {
-            await updateDoc(doc(db, "users", id), {
-              profileImage: url,
-            })
-          })
-          .catch(async e => {
-            console.log(e);
-            await updateDoc(doc(db, "users", id), {
-              profileImage: null,
-            })
-          })
-        })
-      } 
-
     const [selectedImage, setSelectedImage] = useState(null);
     const [email, setEmail] = useState('');
     const [name, setName] = useState('');
@@ -66,9 +22,7 @@ export const Profile = (props) => {
         const userId = auth.currentUser.uid
         const user = query(users, where('userUid', '==', userId))
 
-
-        await getDocs(user).then(querySnapshot => {
-            
+        await getDocs(user).then(querySnapshot => {           
             querySnapshot.forEach((doc) => {
                 const data = doc.data()
 
@@ -88,13 +42,7 @@ export const Profile = (props) => {
     async function updateUser() {
 
         if(updatedProfilePictureFlag) {
-            try {
-                uploadImage(auth.currentUser.uid)
-            } catch {
-                await updateDoc(doc(db, "users", value.user.uid), {
-                profileImage: null,
-                })
-            }
+            await uploadImage(auth.currentUser.uid, selectedImage)
         }
         
         updateDoc(doc(db, "users", auth.currentUser.uid), {
@@ -128,6 +76,14 @@ export const Profile = (props) => {
         )
     }
 
+    let handlerImagerPicker = async () => {
+        let imageUri = await openImagePickerAsync()
+        setSelectedImage(imageUri)
+        if (imageUri !== undefined){
+            setUpdateProfilePictureFlag(true)
+        }
+      }    
+
     useEffect(() => {
         getCurrentUserData()
       }, [])
@@ -153,7 +109,7 @@ export const Profile = (props) => {
                         </View>
                     )
                     }
-                    <TouchableOpacity style={stylesGeneral.button} onPress={openImagePickerAsync}>
+                    <TouchableOpacity style={stylesGeneral.button} onPress={handlerImagerPicker}>
                         {
                             selectedImage !== null ? (
                                 <View>

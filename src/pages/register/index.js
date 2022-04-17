@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import { 
+  ActivityIndicator,
   Alert, 
   Text, 
   View, 
@@ -14,8 +15,7 @@ import styles from './style'
 import { createUserWithEmailAndPassword } from "firebase/auth"
 import { auth, db } from "../../../firebase"
 import { doc, setDoc, updateDoc } from 'firebase/firestore'
-import * as ImagePicker from 'expo-image-picker';
-import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
+import { openImagePickerAsync, uploadImage } from '../../components/imagePicker'
 
 export const Register = (props) => {
 
@@ -25,18 +25,18 @@ export const Register = (props) => {
   const [password, setPassword] = useState('');
   const [passwordConfirmation, setPasswordConfirmation] = useState('');
   const [selectedImage, setSelectedImage] = useState(null);
-
-  let openImagePickerAsync = async () => {
-    let permissionResult = await ImagePicker.requestMediaLibraryPermissionsAsync();
-    if (permissionResult.granted === false) {
-      alert("Permission to access camera roll is required!");
-      return;
+  const [loading, setLoading] = useState(false);
+ 
+  function validationRegister(){
+    if (name.length < 4){
+      Alert.alert("Erro", "O nome tem que ter pelo menos 3 caracteres")
+      return
+    } else if (password !== passwordConfirmation){
+      Alert.alert("Erro", "Senhas não confere")
+      return
     }
-    let pickerResult = await ImagePicker.launchImageLibraryAsync();
-    if (pickerResult.cancelled === true) {
-      return;
-    }
-    setSelectedImage(pickerResult.uri);
+    setLoading(true)
+    createUser()
   }
 
   async function createUser() {
@@ -50,7 +50,7 @@ export const Register = (props) => {
       })
       if (selectedImage !== null) {
         try {
-          uploadImage(value.user.uid)
+          await uploadImage(value.user.uid, selectedImage)
         } catch {
           await updateDoc(doc(db, "users", value.user.uid), {
             profileImage: null,
@@ -61,37 +61,26 @@ export const Register = (props) => {
       Alert.alert("Sucesso", "Usuário cadastrado com sucesso")
       props.navigation.navigate('Login')
     })
-    .catch(error => console.log(error));
+    .catch(function (error) {
+      setLoading(false)
+      if (error.code == 'auth/invalid-email'){
+        Alert.alert("Erro", "Email invalido")
+      } else if (error.code == 'auth/weak-password'){
+        Alert.alert("Erro", "A senha tem que ter no mínimo 6 caracteres")
+      } else if (error.code == 'email-already-in-use'){
+        Alert.alert("Erro", "Email já utilizado")
+      }
+      else {
+        Alert.alert("Erro", "Ocorreu um erro, tente novamente mais tarde")
+      }
+      console.log(error)
+    });
   };
 
-  const uploadImage = async (id) => {
-    const uploadUri = selectedImage;
-    const uriSplit = uploadUri.split('.');
-    const fileExtension = uriSplit[uriSplit.length - 1];
-
-    const response = await fetch(uploadUri);
-    const blob = await response.blob(); 
-
-    const storage = getStorage();
-    const storageRef = ref(storage);
-    const imageRef = ref(storageRef, `userProfilePictures/${id}.${fileExtension}`);
-
-    uploadBytes(imageRef, blob).then((snapshot) => {
-      console.log('Uploaded a blob or file!');
-      getDownloadURL(imageRef)
-      .then(async url =>  {
-        await updateDoc(doc(db, "users", id), {
-          profileImage: url,
-        })
-      })
-      .catch(async e => {
-        console.log(e);
-        await updateDoc(doc(db, "users", id), {
-          profileImage: null,
-        })
-      })
-    })
-  } 
+  let handlerImagerPicker = async () => {
+    let imageUri = await openImagePickerAsync()
+    setSelectedImage(imageUri)
+  }
 
   return (
     <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
@@ -113,18 +102,10 @@ export const Register = (props) => {
                   </View>
                 )
               }
-          <TouchableOpacity style={stylesGeneral.button} onPress={openImagePickerAsync}>
-            {
-              selectedImage !== null ? (
-                <View>
-                  <Text style={stylesGeneral.textButton}>Adicionar foto</Text>
-                </View>
-              ) : (
-                <>
-                  <Text style={stylesGeneral.textButton}>Adicionar foto</Text>
-                  </>
-                )
-              }
+          <TouchableOpacity style={stylesGeneral.button} onPress={() => handlerImagerPicker()}>
+            <View>
+              <Text style={stylesGeneral.textButton}>Adicionar foto</Text>
+            </View>
           </TouchableOpacity>
         </View>
         <TextInput
@@ -132,21 +113,21 @@ export const Register = (props) => {
           placeholder="Email"
           keyboardType='email-address'
           value={email}
-          onChangeText={(email) => setEmail(email)}>
+          onChangeText={(email) => setEmail(email.replace(/\s*$/,""))}>
         </TextInput>
         <TextInput
           style={stylesGeneral.input}
           placeholder="Nome"
           keyboardType='default'
           value={name}
-          onChangeText={(name) => setName(name)}>
+          onChangeText={(name) => setName(name.replace(/\s*$/,""))}>
         </TextInput>
         <TextInput
           style={stylesGeneral.input}
           placeholder="Placa do carro"
           keyboardType='default'
           value={licensePlate}
-          onChangeText={(licensePlate) => setLicensePlate(licensePlate)}>
+          onChangeText={(licensePlate) => setLicensePlate(licensePlate.replace(/\s*$/,""))}>
         </TextInput>
         <TextInput 
           style={stylesGeneral.input} 
@@ -166,12 +147,12 @@ export const Register = (props) => {
         </TextInput>
         <TouchableOpacity 
           style={stylesGeneral.button}
-          onPress={() => createUser()}>
+          onPress={() => validationRegister()}>
           <Text style={stylesGeneral.textButton}>Cadastrar</Text>
         </TouchableOpacity>
         <Text
           onPress={() => props.navigation.navigate("Login")}>
-          Já possui cadastro?</Text>
+          {loading ? <ActivityIndicator size="large" color='#0000ff'></ActivityIndicator> : "Já possui cadastro?"}</Text>
       </View>
     </TouchableWithoutFeedback>
   );

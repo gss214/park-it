@@ -24,7 +24,10 @@ export const Login = (props) => {
       console.log('usuario logado com sucesso! ' + value.user.email);
       props.navigation.navigate('TopTabNavigator');
     })
-    .catch(error => console.log(error));
+    .catch(function (error) { 
+      Alert.alert("Erro", "Não foi possivel fazer login")
+      console.log(error)
+    })
   };
 
   return (
@@ -37,7 +40,7 @@ export const Login = (props) => {
               placeholder="Email"
               keyboardType='email-address'
               value={email}
-              onChangeText={email => setEmail(email)}>
+              onChangeText={email => setEmail(email.replace(/\s*$/,""))}>
             </TextInput>
             <TextInput 
               style={stylesGeneral.input} 
