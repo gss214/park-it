@@ -4,6 +4,7 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack"
 import { TopTabNavigator } from "../navigators/tabNavigation"
 import { TopTabNavigatorParking } from "./tabNavigationParking"
 
+import { SearchParkSpot } from '../pages/searchParkSpot'
 import { Login } from '../pages/login'
 import { Register } from '../pages/register'
 import { NewComment } from '../pages/newComment'
@@ -39,6 +40,11 @@ const MainStackNavigator = () => {
           title: "Adicionar Comentário"
         }}
         component={NewComment}
+      />
+      <Stack.Screen 
+        name="SearchParkSpot" 
+        options={{ headerShown: false }}
+        component={SearchParkSpot}
       />
     </Stack.Navigator>
   );

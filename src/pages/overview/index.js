@@ -5,7 +5,6 @@ import styles from "./style"
 import MapView, { Marker } from 'react-native-maps'
 import { Rating } from 'react-native-ratings'
 
-
 export const Overview = (props) => {
   const latitudeDelta = 0.002
   const longitudeDelta = 0.002
@@ -55,7 +54,9 @@ export const Overview = (props) => {
         </Marker>
       </MapView>
       <TouchableOpacity style={stylesGeneral.button}>
-        <Text style={stylesGeneral.textButton}>
+        <Text 
+          style={stylesGeneral.textButton}
+          onPress={() => props.navigation.navigate("SearchParkSpot", props.route.params.parking)}>
           Procurar Vaga
         </Text>
       </TouchableOpacity>
