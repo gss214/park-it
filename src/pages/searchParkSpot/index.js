@@ -5,15 +5,12 @@ import styles from "./style"
 import MapView, { Marker } from 'react-native-maps'
 import { db } from "../../../firebase";
 import { collection, getDocs, query, updateDoc, doc, where } from "firebase/firestore";
-import { getDatabase, set } from "firebase/database"
-import { getPreciseDistance, getBoundsOfDistance } from 'geolib';
 import * as Location from 'expo-location'
 import { useIsFocused } from "@react-navigation/native";
 
 export const SearchParkSpot = (props) => {
 
   const [location, setLocation] = useState(null)
-  const [region, setRegion] = useState(null)
   const [parkingSpots, setParkingSpots] = useState(null)
   const [emptyParkingSpots, setEmptyParkingSpots] = useState(null)
   const [closestParkingSpot, setClosestParkingSpot] = useState(null)
@@ -22,7 +19,6 @@ export const SearchParkSpot = (props) => {
   const latitudeDelta = 0.002
   const longitudeDelta = 0.002
   const PI_RAD = Math.PI / 180.0;
-  const map = useRef();
   const isFocused = useIsFocused()
 
   const myquery = query(
@@ -110,10 +106,15 @@ export const SearchParkSpot = (props) => {
       console.log("Erro ao atualizar vaga")
       console.log(error)
     })
-
-    //props.navigation.navigate("SearchParkSpot", props.route.params)
   }
 
+  function availableSpots() {
+    let aux = false
+    emptyParkingSpots.map((spot) => {
+      if (spot == true) aux = true
+    })
+    return (aux ? true : false)
+  }
 
   useEffect(() => {
     getParkingSpots()
@@ -125,24 +126,17 @@ export const SearchParkSpot = (props) => {
     if (parkingSpots !== null && location !== null) getClosestParkingSpot()
   }, [emptyParkingSpots])
 
-  function availableSpots() {
-    emptyParkingSpots.map((spot) => {
-      if (spot == true) return true
-    })
-    return false
-  }
-
   if (parkingSpots == null || emptyParkingSpots == null || location == null) {
     return <ActivityIndicator></ActivityIndicator>
   }
 
-  console.log(availableSpots())
   if (closestParkingSpot == null && availableSpots()) {
     getClosestParkingSpot()
     return <ActivityIndicator></ActivityIndicator>
   }
 
-  //console.log(closestParkingSpot)
+  console.log(closestParkingSpot)
+
 
   return (
     <View style={stylesGeneral.container} >
@@ -158,15 +152,12 @@ export const SearchParkSpot = (props) => {
           latitudeDelta: latitudeDelta,
           longitudeDelta: longitudeDelta
         })}
-        ref={map}
-        //region = {region}
-        //onRegionChangeComplete={(region) => setRegion(region)}
         loadingEnabled={true}
       >
 
         {parkingSpots ? parkingSpots.map((spot, index) => {
           if (closestParkingSpot !== null) {
-            if (spot == closestParkingSpot.spot && emptyParkingSpots[index]) {
+            if (spot == closestParkingSpot.spot && emptyParkingSpots[index] == true) {
               return <Marker key={'closest'}
                 pinColor={'gold'}
                 coordinate={{
@@ -178,44 +169,38 @@ export const SearchParkSpot = (props) => {
                 title={'Vaga mais próxima!'}
               ></Marker>
             }
-          }
-          else if (emptyParkingSpots[index]) {
-            return <Marker key={index}
-              coordinate={{
-                latitude: spot.latitude,
-                longitude: spot.longitude,
-                latitudeDelta: latitudeDelta,
-                longitudeDelta: longitudeDelta
-              }}
-            ></Marker>
+            else if (emptyParkingSpots[index]) {
+              return <Marker key={index}
+                coordinate={{
+                  latitude: spot.latitude,
+                  longitude: spot.longitude,
+                  latitudeDelta: latitudeDelta,
+                  longitudeDelta: longitudeDelta
+                }}
+              ></Marker>
+            }
+            else return null
           }
           else {
             return null
           }
         }) : null}
 
-        {/* <Marker 
-                    image={require('../../../assets/carro.png')}
-                    pinColor={'gold'} key ={'location'} coordinate={location}
-                /> */}
+        <Marker 
+          image={require('../../../assets/carro.png')}
+          key ={'location'} coordinate={location}
+        />
 
       </MapView>
 
-      {/* implementar os botoes e se sobrar tempo mostrar a localizacao da pessoa no mapa tambem*/}
-      <TouchableOpacity style={styles.button1}>
-        <Text
-          style={stylesGeneral.textButton}
-          onPress={() => updateEmptySpots(closestParkingSpot.id, false)}
-        >
+      <TouchableOpacity style={styles.button1} disabled={closestParkingSpot == null ? true : false} onPress={() => updateEmptySpots(closestParkingSpot.id, false)}>
+        <Text style={stylesGeneral.textButton}>
           Pegar Vaga
         </Text>
       </TouchableOpacity>
 
-      <TouchableOpacity style={styles.button2}>
-        <Text
-          style={stylesGeneral.textButton}
-          onPress={() => updateEmptySpots(yourSpot.id, true)}
-        >
+      <TouchableOpacity style={styles.button2} disabled={yourSpot == null ? true : false} onPress={() => updateEmptySpots(yourSpot.id, true)}>
+        <Text style={stylesGeneral.textButton}>
           Liberar Vaga
         </Text>
       </TouchableOpacity>
