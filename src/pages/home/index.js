@@ -19,9 +19,8 @@ export const Home = (props) => {
 
   const [location, setLocation] = useState(null)
   const [marker, setMarker] = useState({ latitude: -15.80825, longitude: -48.0088149 })
-  const [region, setRegion] = useState({ latitude: -15.80825, longitude: -48.0088149, latitudeDelta: latitudeDelta, longitudeDelta: longitudeDelta })
+  const [region, setRegion] = useState({ latitude: -15.80825, longitude: -48.0088149 })
   const [errorMsg, setErrorMsg] = useState(null)
-  const [loading, setLoading] = useState(true);
   const [parkingList, setParkingList] = useState(null)
 
   const myquery = query(collection(db, "parking"));
@@ -49,7 +48,6 @@ export const Home = (props) => {
       markerlist.push({ ...doc.data(), id: doc.id });
     });
     setParkingList(markerlist)
-    setLoading(false)
   }
 
   useEffect(() => {
@@ -57,7 +55,7 @@ export const Home = (props) => {
     getParkingList()
   }, [])
 
-  if (loading) {
+  if (location == null || parkingList == null) {
     return <ActivityIndicator></ActivityIndicator>
   }
 
