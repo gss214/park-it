@@ -33,7 +33,7 @@ export const Register = (props) => {
       Alert.alert("Erro", "O nome tem que ter pelo menos 3 caracteres")
       return
     } else if (password !== passwordConfirmation) {
-      Alert.alert("Erro", "Senhas não confere")
+      Alert.alert("Erro", "Senhas não conferem")
       return
     }
     setLoading(true)
@@ -121,7 +121,7 @@ export const Register = (props) => {
           placeholder="Nome"
           keyboardType='default'
           value={name}
-          onChangeText={(name) => setName(name.replace(/\s*$/, ""))}>
+          onChangeText={(name) => setName(name)}>
         </TextInput>
         <TextInput
           style={stylesGeneral.input}
