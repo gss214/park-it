@@ -53,10 +53,8 @@ export const Overview = (props) => {
         >
         </Marker>
       </MapView>
-      <TouchableOpacity style={stylesGeneral.button}>
-        <Text 
-          style={stylesGeneral.textButton}
-          onPress={() => props.navigation.navigate("SearchParkSpot", props.route.params.parking)}>
+      <TouchableOpacity style={stylesGeneral.button} onPress={() => props.navigation.navigate("SearchParkSpot", props.route.params.parking)}>
+        <Text style={stylesGeneral.textButton}>
           Procurar Vaga
         </Text>
       </TouchableOpacity>

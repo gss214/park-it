@@ -8,7 +8,7 @@ const styles = StyleSheet.create({
   },
   mapView: {
     top: 90,
-    width: 600,
+    width: '100%',
     height: 550,
     position: 'absolute'
   },
@@ -23,7 +23,7 @@ const styles = StyleSheet.create({
     left: 10,
     width: 150,
     height: 50,
-    alignItems: "center",
+    alignItems: "center"
   }, 
 
   button2: {

@@ -88,7 +88,7 @@ export const Home = (props) => {
       </MapView>
       <View style={styles.search}>
         <GooglePlacesAutocomplete
-          placeholder='Pesquisar Endereço ou Estacionamento'
+          placeholder='Pesquisar Endereço'
           autoFocus={false}
           onPress={(data, details) => {
             setRegion({

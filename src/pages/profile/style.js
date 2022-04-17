@@ -13,6 +13,13 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     marginLeft: 60,
     marginTop: 20,
+  },
+  button1: {
+
+  },
+
+  button2: {
+
   }
 });
 

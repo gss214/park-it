@@ -4,7 +4,7 @@ import stylesGeneral from "../../components/style"
 import styles from './style'
 import { auth, db } from "../../../firebase"
 import { collection, getDocs, query, where, updateDoc, doc } from "@firebase/firestore";
-import { updatePassword } from "firebase/auth";
+import { updatePassword, signOut } from "firebase/auth";
 import { openImagePickerAsync, uploadImage } from '../../components/imagePicker'
 
 export const Profile = (props) => {
@@ -66,8 +66,8 @@ export const Profile = (props) => {
     }
 
     Alert.alert(
-      "Perfil atualizado com sucesso",
-      "Você será redirecionado para a página de vagas",
+      "Sucesso",
+      "Perfil atualizado com sucesso!",
       [
         {
           text: "Ok",
@@ -76,6 +76,16 @@ export const Profile = (props) => {
         }
       ]
     )
+  }
+
+  var user = auth.currentUser;
+  async function logout(){
+    await signOut(auth)
+      .then(() => {
+      console.log('o usuario fez logout!')
+      props.navigation.navigate('Login')
+      })
+    .catch(error => console.log(error))
   }
 
   let handlerImagerPicker = async () => {
@@ -167,6 +177,11 @@ export const Profile = (props) => {
           style={stylesGeneral.button}
           onPress={() => updateUser()}>
           <Text style={stylesGeneral.textButton}>Atualizar Perfil</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={stylesGeneral.button}
+          onPress={() => logout()}>
+          <Text style={stylesGeneral.textButton}>Sair</Text>
         </TouchableOpacity>
       </View>
     </TouchableWithoutFeedback>
