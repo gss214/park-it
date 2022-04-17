@@ -1,5 +1,5 @@
 import React from "react"
-import { View, Text, Image, TouchableOpacity } from "react-native"
+import { View, Text, TouchableOpacity } from "react-native"
 import stylesGeneral from "../../components/style"
 import styles from "./style"
 import MapView, { Marker } from 'react-native-maps'
@@ -70,12 +70,12 @@ export const Overview = (props) => {
             ratingCount={5}
             startingValue={getFormattedData().avaliation}
             imageSize={30}
-            readonly={true}/>
+            readonly={true} />
           <Text style={styles.starCount}>({getFormattedData().starCount} avaliações)</Text>
         </View>
-          
+
         <Text style={styles.isPrivate}>{getFormattedData().isPrivate}</Text>
-        
+
       </View>
     </View>
   );

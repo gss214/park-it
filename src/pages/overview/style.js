@@ -4,7 +4,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#e0e5e5',
-    alignItems:'center'
+    alignItems: 'center'
   },
   mapView: {
     width: "100%",
@@ -28,7 +28,7 @@ const styles = StyleSheet.create({
   },
 
   ratingView: {
-    flexDirection:'row'
+    flexDirection: 'row'
   },
   rating: {
     paddingTop: 15,

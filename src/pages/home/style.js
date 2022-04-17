@@ -4,14 +4,14 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#e0e5e5',
-    alignItems:'center'
+    alignItems: 'center'
   },
   mapView: {
     width: 600,
     height: 900,
     marginBottom: 90
   },
-  search:{
+  search: {
     position: 'absolute',
     top: 20,
     left: 20,
