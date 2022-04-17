@@ -5,7 +5,7 @@ const styles = StyleSheet.create({
     flex: 1
   },
   rowContanier: {
-    flexDirection:'row'
+    flexDirection: 'row'
   },
   inputContainer: {
     alignSelf: "center",
@@ -13,7 +13,7 @@ const styles = StyleSheet.create({
     marginLeft: 2,
     marginRight: 2,
     marginTop: 10,
-    minHeight: 10, 
+    minHeight: 10,
     minWidth: 10,
     borderRadius: 50,
     backgroundColor: "transparent",
@@ -22,13 +22,13 @@ const styles = StyleSheet.create({
     paddingLeft: 10,
     paddingTop: 10,
     paddingBottom: 10
-},
-barRating: {
-  paddingTop: 10,
-  paddingRight: 10,
-  marginBottom: 20,
-  marginTop: 10
-},
+  },
+  barRating: {
+    paddingTop: 10,
+    paddingRight: 10,
+    marginBottom: 20,
+    marginTop: 10
+  },
 });
 
 export default styles;

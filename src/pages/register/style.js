@@ -2,14 +2,14 @@ import { StyleSheet } from "react-native";
 
 const styles = StyleSheet.create({
   containerForm: {
-    flex:1,
-    alignItems:'center',
+    flex: 1,
+    alignItems: 'center',
     justifyContent: 'center',
     width: "100%",
     height: "auto"
   },
   rowContanier: {
-    flexDirection:'row'
+    flexDirection: 'row'
   },
   text: {
     textAlign: 'center'
@@ -24,8 +24,8 @@ const styles = StyleSheet.create({
   photo: {
     width: 50,
     height: 50,
-    overflow:'hidden',
-    borderRadius: 150/2,
+    overflow: 'hidden',
+    borderRadius: 150 / 2,
     shadowColor: 'black',
   },
   photoContainer: {

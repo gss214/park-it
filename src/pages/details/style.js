@@ -2,14 +2,14 @@ import { StyleSheet } from "react-native";
 
 const styles = StyleSheet.create({
   containerForm: {
-    flex:1,
-    alignItems:'center',
+    flex: 1,
+    alignItems: 'center',
     justifyContent: 'center',
     width: "100%",
     height: "auto"
   },
   rowContanier: {
-    flexDirection:'row'
+    flexDirection: 'row'
   },
   text: {
     textAlign: 'center'
@@ -22,16 +22,16 @@ const styles = StyleSheet.create({
     paddingLeft: 20
   },
 
-  borda:{
+  borda: {
     paddingTop: 15,
-   
+
   },
 
   starCount: {
     paddingTop: 15,
   },
   ratingView: {
-    flexDirection:'row',
+    flexDirection: 'row',
     paddingBottom: 15
   },
   photoContainer: {
@@ -44,8 +44,8 @@ const styles = StyleSheet.create({
   photo: {
     width: 50,
     height: 50,
-    overflow:'hidden',
-    borderRadius: 150/2,
+    overflow: 'hidden',
+    borderRadius: 150 / 2,
     shadowColor: 'black',
   },
   photoContainer: {
@@ -55,7 +55,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
-  barRating:{
+  barRating: {
     paddingLeft: 55,
     paddingTop: 10
   },
@@ -78,7 +78,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#e0e5e5',
-    alignItems:'center'
+    alignItems: 'center'
   },
 });
 

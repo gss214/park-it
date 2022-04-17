@@ -23,7 +23,7 @@ export let uploadImage = async (id, selectedImage) => {
   const fileExtension = uriSplit[uriSplit.length - 1];
 
   const response = await fetch(uploadUri);
-  const blob = await response.blob(); 
+  const blob = await response.blob();
 
   const storage = getStorage();
   const storageRef = ref(storage);
@@ -32,16 +32,16 @@ export let uploadImage = async (id, selectedImage) => {
   uploadBytes(imageRef, blob).then((snapshot) => {
     console.log('Uploaded a blob or file!');
     getDownloadURL(imageRef)
-    .then(async url =>  {
-      await updateDoc(doc(db, "users", id), {
-        profileImage: url,
+      .then(async url => {
+        await updateDoc(doc(db, "users", id), {
+          profileImage: url,
+        })
       })
-    })
-    .catch(async e => {
-      console.log(e);
-      await updateDoc(doc(db, "users", id), {
-        profileImage: null,
+      .catch(async e => {
+        console.log(e);
+        await updateDoc(doc(db, "users", id), {
+          profileImage: null,
+        })
       })
-    })
   })
 } 

@@ -2,14 +2,14 @@ import { StyleSheet } from "react-native";
 
 const styles = StyleSheet.create({
   containerForm: {
-    flex:1,
-    alignItems:'center',
+    flex: 1,
+    alignItems: 'center',
     justifyContent: 'center',
     width: "100%",
     height: "auto"
   },
   rowContanier: {
-    flexDirection:'row'
+    flexDirection: 'row'
   },
   card: {
     backgroundColor: "#fff",
@@ -21,8 +21,8 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.2,
     shadowRadius: 1,
     shadowOffset: {
-        width: 3,
-        height: 3
+      width: 3,
+      height: 3
     }
   },
   barRating: {

@@ -13,28 +13,28 @@ const Stack = createNativeStackNavigator()
 const MainStackNavigator = () => {
   return (
     <Stack.Navigator>
-      <Stack.Screen 
-        name="Login" 
+      <Stack.Screen
+        name="Login"
         options={{ headerShown: false }}
         component={Login}
-      />  
-      <Stack.Screen 
-        name="TopTabNavigator" 
+      />
+      <Stack.Screen
+        name="TopTabNavigator"
         component={TopTabNavigator}
         options={{ headerShown: false }}
       />
-      <Stack.Screen 
-        name="TopTabNavigatorParking" 
+      <Stack.Screen
+        name="TopTabNavigatorParking"
         component={TopTabNavigatorParking}
         options={{ headerShown: false }}
       />
-      <Stack.Screen 
-        name="Register" 
+      <Stack.Screen
+        name="Register"
         options={{ headerShown: false }}
         component={Register}
       />
-       <Stack.Screen 
-        name="NewComment" 
+      <Stack.Screen
+        name="NewComment"
         options={{
           title: "Adicionar Comentário"
         }}

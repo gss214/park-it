@@ -1,14 +1,15 @@
 import React, { useState } from 'react'
-import { 
+import {
   ActivityIndicator,
-  Alert, 
-  Text, 
-  View, 
-  TextInput, 
+  Alert,
+  Text,
+  View,
+  TextInput,
   Keyboard,
-  Image, 
+  Image,
   TouchableOpacity,
-  TouchableWithoutFeedback} from "react-native"
+  TouchableWithoutFeedback
+} from "react-native"
 import stylesGeneral from '../../components/style'
 import styles from './style'
 
@@ -26,12 +27,12 @@ export const Register = (props) => {
   const [passwordConfirmation, setPasswordConfirmation] = useState('');
   const [selectedImage, setSelectedImage] = useState(null);
   const [loading, setLoading] = useState(false);
- 
-  function validationRegister(){
-    if (name.length < 4){
+
+  function validationRegister() {
+    if (name.length < 4) {
       Alert.alert("Erro", "O nome tem que ter pelo menos 3 caracteres")
       return
-    } else if (password !== passwordConfirmation){
+    } else if (password !== passwordConfirmation) {
       Alert.alert("Erro", "Senhas não confere")
       return
     }
@@ -41,40 +42,40 @@ export const Register = (props) => {
 
   async function createUser() {
     await createUserWithEmailAndPassword(auth, email, password)
-    .then(async (value) => {
-      await setDoc(doc(db, "users", value.user.uid), {
-        email: email,
-        name: name,
-        licensePlate: licensePlate,
-        userUid: value.user.uid
-      })
-      if (selectedImage !== null) {
-        try {
-          await uploadImage(value.user.uid, selectedImage)
-        } catch {
-          await updateDoc(doc(db, "users", value.user.uid), {
-            profileImage: null,
-          })
+      .then(async (value) => {
+        await setDoc(doc(db, "users", value.user.uid), {
+          email: email,
+          name: name,
+          licensePlate: licensePlate,
+          userUid: value.user.uid
+        })
+        if (selectedImage !== null) {
+          try {
+            await uploadImage(value.user.uid, selectedImage)
+          } catch {
+            await updateDoc(doc(db, "users", value.user.uid), {
+              profileImage: null,
+            })
+          }
         }
-      }
-      console.log('usuario cadastrado com sucesso!\n' + value.user.email + value.user.uid)
-      Alert.alert("Sucesso", "Usuário cadastrado com sucesso")
-      props.navigation.navigate('Login')
-    })
-    .catch(function (error) {
-      setLoading(false)
-      if (error.code == 'auth/invalid-email'){
-        Alert.alert("Erro", "Email invalido")
-      } else if (error.code == 'auth/weak-password'){
-        Alert.alert("Erro", "A senha tem que ter no mínimo 6 caracteres")
-      } else if (error.code == 'email-already-in-use'){
-        Alert.alert("Erro", "Email já utilizado")
-      }
-      else {
-        Alert.alert("Erro", "Ocorreu um erro, tente novamente mais tarde")
-      }
-      console.log(error)
-    });
+        console.log('usuario cadastrado com sucesso!\n' + value.user.email + value.user.uid)
+        Alert.alert("Sucesso", "Usuário cadastrado com sucesso")
+        props.navigation.navigate('Login')
+      })
+      .catch(function (error) {
+        setLoading(false)
+        if (error.code == 'auth/invalid-email') {
+          Alert.alert("Erro", "Email invalido")
+        } else if (error.code == 'auth/weak-password') {
+          Alert.alert("Erro", "A senha tem que ter no mínimo 6 caracteres")
+        } else if (error.code == 'email-already-in-use') {
+          Alert.alert("Erro", "Email já utilizado")
+        }
+        else {
+          Alert.alert("Erro", "Ocorreu um erro, tente novamente mais tarde")
+        }
+        console.log(error)
+      });
   };
 
   let handlerImagerPicker = async () => {
@@ -87,21 +88,21 @@ export const Register = (props) => {
       <View style={styles.containerForm}>
         <View style={styles.rowContanier}>
           {selectedImage !== null ? (
-                <View>
-                  <Image
-                    source={{ uri: selectedImage }}
-                    style={styles.photo}
-                  />
-                </View>
-              ) : (
-                <View>
-                <Image
-                    source={require('../../../assets/account_icon.png')}
-                    style={styles.photo}
-                  />
-                  </View>
-                )
-              }
+            <View>
+              <Image
+                source={{ uri: selectedImage }}
+                style={styles.photo}
+              />
+            </View>
+          ) : (
+            <View>
+              <Image
+                source={require('../../../assets/account_icon.png')}
+                style={styles.photo}
+              />
+            </View>
+          )
+          }
           <TouchableOpacity style={stylesGeneral.button} onPress={() => handlerImagerPicker()}>
             <View>
               <Text style={stylesGeneral.textButton}>Adicionar foto</Text>
@@ -113,39 +114,39 @@ export const Register = (props) => {
           placeholder="Email"
           keyboardType='email-address'
           value={email}
-          onChangeText={(email) => setEmail(email.replace(/\s*$/,""))}>
+          onChangeText={(email) => setEmail(email.replace(/\s*$/, ""))}>
         </TextInput>
         <TextInput
           style={stylesGeneral.input}
           placeholder="Nome"
           keyboardType='default'
           value={name}
-          onChangeText={(name) => setName(name.replace(/\s*$/,""))}>
+          onChangeText={(name) => setName(name.replace(/\s*$/, ""))}>
         </TextInput>
         <TextInput
           style={stylesGeneral.input}
           placeholder="Placa do carro"
           keyboardType='default'
           value={licensePlate}
-          onChangeText={(licensePlate) => setLicensePlate(licensePlate.replace(/\s*$/,""))}>
+          onChangeText={(licensePlate) => setLicensePlate(licensePlate.replace(/\s*$/, ""))}>
         </TextInput>
-        <TextInput 
-          style={stylesGeneral.input} 
+        <TextInput
+          style={stylesGeneral.input}
           placeholder="Senha"
-          keyboardType='default' 
+          keyboardType='default'
           secureTextEntry={true}
           value={password}
           onChangeText={(password) => setPassword(password)}>
         </TextInput>
         <TextInput
-          style={stylesGeneral.input} 
+          style={stylesGeneral.input}
           placeholder="Confirmar Senha"
           keyboardType='default'
           secureTextEntry={true}
           value={passwordConfirmation}
           onChangeText={(passwordConfirmation) => setPasswordConfirmation(passwordConfirmation)}>
         </TextInput>
-        <TouchableOpacity 
+        <TouchableOpacity
           style={stylesGeneral.button}
           onPress={() => validationRegister()}>
           <Text style={stylesGeneral.textButton}>Cadastrar</Text>

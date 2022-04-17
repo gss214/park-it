@@ -2,8 +2,8 @@ import { StyleSheet } from "react-native";
 
 const styles = StyleSheet.create({
   containerForm: {
-    flex:1,
-    alignItems:'center'
+    flex: 1,
+    alignItems: 'center'
   },
   form: {
     width: "100%",
@@ -20,7 +20,7 @@ const styles = StyleSheet.create({
   containerIcon: {
     width: "1%",
     alignSelf: 'center'
-  }, 
+  },
   appIconImage: {
     alignSelf: 'center',
     marginTop: 100
