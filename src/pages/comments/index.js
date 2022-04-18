@@ -71,7 +71,7 @@ export const Comments = (props) => {
           renderItem={({ item }) => (
             <View style={styles.containerForm}>
               <TouchableOpacity style={styles.card}>
-                <Text>Usuário: {checkUser(item.userId)}</Text>
+                <Text style={{fontWeight:"bold"}} >{checkUser(item.userId)}</Text>
                 <SeeMore numberOfLines={3} seeLessText='Leia mais'>
                   {item.comment}
                 </SeeMore>

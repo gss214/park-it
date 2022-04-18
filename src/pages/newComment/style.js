@@ -2,7 +2,8 @@ import { StyleSheet } from "react-native";
 
 const styles = StyleSheet.create({
   containerForm: {
-    flex: 1
+    flex: 1,
+    backgroundColor: "#FFFFFF"
   },
   rowContanier: {
     flexDirection: 'row'
@@ -15,7 +16,7 @@ const styles = StyleSheet.create({
     marginTop: 10,
     minHeight: 10,
     minWidth: 10,
-    borderRadius: 50,
+    borderRadius: 20,
     backgroundColor: "transparent",
     borderWidth: 1,
     borderColor: "gray",

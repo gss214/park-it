@@ -54,10 +54,10 @@ export const Details = (props) => {
       <Text style={styles.espaco}>{getData().isPrivate}</Text>
 
       <Text >Ponto de referência: </Text>
-      <Text style={styles.espaco}>{getData().referencePoint}</Text>
+      <Text style={styles.espaco}>{getData().reference}</Text>
 
       <Text >Horario de Funcionamento: </Text>
-      <Text style={styles.espaco}>{getData().businessHours}</Text>
+      <Text style={styles.espaco}>{getData().hour}</Text>
 
       <Text >Coberto: </Text>
       <Text style={styles.espaco}>{getData().isCovered}</Text>

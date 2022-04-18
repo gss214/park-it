@@ -15,6 +15,7 @@ const stylesGeneral = StyleSheet.create({
     borderRadius: 50,
     padding: 10,
     marginBottom: 15,
+    marginTop: 15,
     width: 200,
     alignItems: "center",
     alignSelf: 'center',

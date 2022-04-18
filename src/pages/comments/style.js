@@ -6,18 +6,20 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     width: "100%",
-    height: "auto"
+    height: "auto",
+    backgroundColor: "#FFFFFF"
   },
   rowContanier: {
     flexDirection: 'row'
   },
   card: {
-    backgroundColor: "#fff",
+    backgroundColor: "#FFFFFF",
     marginBottom: 10,
     marginTop: 16,
     marginLeft: '2%',
-    width: '100%',
+    width: '95%',
     shadowColor: '#000',
+    borderRadius: 30,
     shadowOpacity: 0.2,
     shadowRadius: 1,
     shadowOffset: {
