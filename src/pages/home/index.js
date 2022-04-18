@@ -11,6 +11,7 @@ import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplet
 
 import { db } from "../../../firebase";
 import { collection, getDocs, query, where } from "firebase/firestore";
+import { useIsFocused } from "@react-navigation/native";
 
 export const Home = (props) => {
 
@@ -24,6 +25,7 @@ export const Home = (props) => {
   const [parkingList, setParkingList] = useState(null)
 
   const myquery = query(collection(db, "parking"));
+  const isFocused = useIsFocused()
 
   async function getLocation() {
     let { status } = await Location.requestForegroundPermissionsAsync()
@@ -53,7 +55,7 @@ export const Home = (props) => {
   useEffect(() => {
     getLocation()
     getParkingList()
-  }, [])
+  }, [isFocused])
 
   if (location == null || parkingList == null) {
     return <ActivityIndicator></ActivityIndicator>
@@ -86,7 +88,7 @@ export const Home = (props) => {
       </MapView>
       <View style={styles.search}>
         <GooglePlacesAutocomplete
-          placeholder='Pesquisar Endereço ou Estacionamento'
+          placeholder='Pesquisar Endereço'
           autoFocus={false}
           onPress={(data, details) => {
             setRegion({

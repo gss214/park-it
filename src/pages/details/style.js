@@ -6,7 +6,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     width: "100%",
-    height: "auto"
+    height: "auto",
+    backgroundColor: "#FFFFFF"
   },
   rowContanier: {
     flexDirection: 'row'
@@ -19,7 +20,8 @@ const styles = StyleSheet.create({
     width: "100%",
     fontSize: 18,
     paddingBottom: 15,
-    paddingLeft: 20
+    paddingLeft: 20,
+    backgroundColor: "#FFFFFF"
   },
 
   borda: {
@@ -32,7 +34,8 @@ const styles = StyleSheet.create({
   },
   ratingView: {
     flexDirection: 'row',
-    paddingBottom: 15
+    paddingBottom: 15,
+    backgroundColor: "#FFFFFF"
   },
   photoContainer: {
     flex: 1,

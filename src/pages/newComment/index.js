@@ -3,14 +3,16 @@ import stylesGeneral from "../../components/style"
 import styles from './style'
 import { Rating } from 'react-native-ratings'
 import { db, auth } from "../../../firebase"
-import { addDoc, collection } from 'firebase/firestore'
+import { addDoc, collection, updateDoc, doc } from 'firebase/firestore'
 import { Alert, TextInput, View, Text, Image, Keyboard, TouchableOpacity, TouchableWithoutFeedback } from "react-native"
 
 
 export const NewComment = (props) => {
 
   const user = auth.currentUser
-  const id = props.route.params
+  const id = props.route.params.id
+  const ratingTotalStars = props.route.params.ratingTotalStars
+  const ratingUsers = props.route.params.ratingUsers
   const [comment, setComment] = useState('')
   const [rating, setRating] = useState(5)
 
@@ -21,6 +23,16 @@ export const NewComment = (props) => {
         parkingId: id,
         rating: rating,
         userId: user.uid
+      })
+
+      await updateDoc(doc(db, "parking", id), {
+        ratingTotalStars: ratingTotalStars + rating,
+        ratingUsers: ratingUsers + 1
+      }).then(() => {
+        console.log("Rating atualizado com sucesso")
+      }).catch(error => {
+        console.log("Erro ao atualizar rating")
+        console.log(error)
       })
       Alert.alert("Sucesso", "Comentário cadastrado com sucesso")
       props.navigation.navigate('TopTabNavigatorParking')

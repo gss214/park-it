@@ -28,7 +28,9 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "versionCode": 1,
+      "package": "com.parkit"
     },
     "web": {
       "favicon": "./assets/favicon.png"

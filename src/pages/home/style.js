@@ -4,7 +4,8 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#e0e5e5',
-    alignItems: 'center'
+    alignItems: 'center',
+    backgroundColor: "#FFFFFF"
   },
   mapView: {
     width: '100%',
@@ -14,10 +15,9 @@ const styles = StyleSheet.create({
   search: {
     position: 'absolute',
     top: 20,
-    left: 20,
-    right: 100,
     bottom: 100,
-    width: 350
+    width: '90%',
+    alignSelf: 'center'
   }
 });
 

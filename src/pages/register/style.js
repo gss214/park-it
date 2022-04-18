@@ -6,7 +6,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     width: "100%",
-    height: "auto"
+    height: "auto",
+    backgroundColor: "#FFFFFF"
   },
   rowContanier: {
     flexDirection: 'row'
@@ -27,6 +28,8 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
     borderRadius: 150 / 2,
     shadowColor: 'black',
+    marginTop: 13,
+    marginRight: 10
   },
   photoContainer: {
     flex: 1,

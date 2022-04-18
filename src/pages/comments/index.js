@@ -71,7 +71,7 @@ export const Comments = (props) => {
           renderItem={({ item }) => (
             <View style={styles.containerForm}>
               <TouchableOpacity style={styles.card}>
-                <Text>Usuário: {checkUser(item.userId)}</Text>
+                <Text style={{fontWeight:"bold"}} >{checkUser(item.userId)}</Text>
                 <SeeMore numberOfLines={3} seeLessText='Leia mais'>
                   {item.comment}
                 </SeeMore>
@@ -88,7 +88,7 @@ export const Comments = (props) => {
         />
         <TouchableOpacity
           style={stylesGeneral.button}
-          onPress={() => props.navigation.navigate('NewComment', props.route.params.parking.id)}>
+          onPress={() => props.navigation.navigate('NewComment', props.route.params.parking)}>
           <Text style={{ fontSize: 15, color: '#FFFFFF' }}> Adicionar Comentário </Text>
         </TouchableOpacity>
       </View>

@@ -11,8 +11,8 @@ export const Overview = (props) => {
 
   function getFormattedData() {
     const parkingName = props.route.params.parking.name
-    const starCount = props.route.params.parking.rating[0];
-    const avaliationCount = props.route.params.parking.rating[1];
+    const starCount = props.route.params.parking.ratingTotalStars;
+    const avaliationCount = props.route.params.parking.ratingUsers;
     var avaliation = 0
     if (avaliationCount != 0)
       avaliation = starCount / avaliationCount
@@ -24,7 +24,7 @@ export const Overview = (props) => {
       'parkingName': parkingName,
       'address': address,
       'avaliation': avaliation,
-      'starCount': starCount,
+      'starCount': avaliationCount,
       'isPrivate': isPrivate,
     }
   }
@@ -53,10 +53,8 @@ export const Overview = (props) => {
         >
         </Marker>
       </MapView>
-      <TouchableOpacity style={stylesGeneral.button}>
-        <Text 
-          style={stylesGeneral.textButton}
-          onPress={() => props.navigation.navigate("SearchParkSpot", props.route.params.parking)}>
+      <TouchableOpacity style={stylesGeneral.button} onPress={() => props.navigation.navigate("SearchParkSpot", props.route.params.parking)}>
+        <Text style={stylesGeneral.textButton}>
           Procurar Vaga
         </Text>
       </TouchableOpacity>
@@ -64,7 +62,7 @@ export const Overview = (props) => {
         <Text style={styles.parkingTitle}>{getFormattedData().parkingName}</Text>
         <Text style={styles.overviewItem}>{getFormattedData().address}</Text>
         <View style={styles.ratingView}>
-          <Text style={styles.rating}>{getFormattedData().avaliation}</Text>
+          <Text style={styles.rating}>{getFormattedData().avaliation.toFixed(2)}</Text>
           <Rating
             style={styles.barRating}
             type='star'

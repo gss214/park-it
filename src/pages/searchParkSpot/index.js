@@ -1,5 +1,5 @@
-import React, { useState, useEffect, useRef } from "react"
-import { ActivityIndicator, View, Text, Image, TouchableOpacity } from "react-native"
+import React, { useState, useEffect } from "react"
+import { Alert, ActivityIndicator, View, Text, Image, TouchableOpacity } from "react-native"
 import stylesGeneral from "../../components/style"
 import styles from "./style"
 import MapView, { Marker } from 'react-native-maps'
@@ -106,6 +106,9 @@ export const SearchParkSpot = (props) => {
       console.log("Erro ao atualizar vaga")
       console.log(error)
     })
+
+    if(isEmpty == false) Alert.alert("Sucesso", "Vaga ocupada com sucesso!")
+    else Alert.alert("Sucesso", "Vaga liberada com sucesso!")
   }
 
   function availableSpots() {
@@ -147,8 +150,8 @@ export const SearchParkSpot = (props) => {
       <MapView
         style={styles.mapView}
         initialRegion={({
-          latitude: props.route.params.coordinates.latitude,
-          longitude: props.route.params.coordinates.longitude,
+          latitude: closestParkingSpot == null ? props.route.params.coordinates.latitude : closestParkingSpot.spot.latitude,
+          longitude: closestParkingSpot == null ? props.route.params.coordinates.longitude : closestParkingSpot.spot.longitude,
           latitudeDelta: latitudeDelta,
           longitudeDelta: longitudeDelta
         })}

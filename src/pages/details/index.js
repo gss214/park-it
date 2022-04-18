@@ -7,8 +7,8 @@ export const Details = (props) => {
 
   function getData() {
 
-    const starCount = props.route.params.parking.rating[0];
-    const avaliationCount = props.route.params.parking.rating[1];
+    const starCount = props.route.params.parking.ratingTotalStars;
+    const avaliationCount = props.route.params.parking.ratingUsers;
     const businessHours = props.route.params.parking.businessHours;
     const referencePoint = props.route.params.parking.referencePoint;
     const isCovered = props.route.params.parking.isPrivate ? "Estacionamento Coberto" : "Estacionamento Descoberto"
@@ -44,20 +44,20 @@ export const Details = (props) => {
           style={styles.barRating}
           type='star'
           ratingCount={5}
-          startingValue={getData().avaliation}
+          startingValue={getData().avaliation.toFixed(2)}
           imageSize={28}
           readonly={true} />
-        <Text style={styles.rating}>  {getData().avaliation}</Text>
+        <Text style={styles.rating}>  {getData().avaliation.toFixed(2)}</Text>
       </View>
 
       <Text >Privado: </Text>
       <Text style={styles.espaco}>{getData().isPrivate}</Text>
 
       <Text >Ponto de referência: </Text>
-      <Text style={styles.espaco}>{getData().referencePoint}</Text>
+      <Text style={styles.espaco}>{getData().reference}</Text>
 
       <Text >Horario de Funcionamento: </Text>
-      <Text style={styles.espaco}>{getData().businessHours}</Text>
+      <Text style={styles.espaco}>{getData().hour}</Text>
 
       <Text >Coberto: </Text>
       <Text style={styles.espaco}>{getData().isCovered}</Text>

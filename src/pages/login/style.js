@@ -3,7 +3,8 @@ import { StyleSheet } from "react-native";
 const styles = StyleSheet.create({
   containerForm: {
     flex: 1,
-    alignItems: 'center'
+    alignItems: 'center',
+    backgroundColor: "#FFFFFF"
   },
   form: {
     width: "100%",
