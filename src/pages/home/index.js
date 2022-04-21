@@ -99,7 +99,7 @@ export const Home = (props) => {
             })
           }}
           query={{
-            key: 'AIzaSyBoZ3p7Cxx0w13fN6XNqxak7vZm7IfhGtU',
+            key: '',
             language: 'pt-br',
             components: 'country:br'
           }}
