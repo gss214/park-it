@@ -1,34 +1,31 @@
-# park-it
-Projeto da disciplina de Sistemas de Informações - 2021.2
+<img src="https://github.com/gss214/park-it/blob/main/assets/app_logo.png" height="70">
 
-*Grupo 3*
+## Development Information
+Final Project of Management Information Systems Course at UnB in 2021.2. \
+University of Brasilia, Institute of Exact Sciences, Computer Science Department. \
+Technologies used: React Native, Google Firebase, Android Studio. \
+Developed by: 
+- [Guilherme Silva Souza](https://github.com/gss214) 
+- [Maria Eduarda Machado de Holanda](https://github.com/dudaholandah). 
+- [Pedro de Torres Maschio](https://github.com/pedro-maschio)
+- [Tong Zhou](https://github.com/Tong00020) 
 
-Alunos(as):
+## Description
 
-Guilherme Silva Souza - 190014059
+We developed an Android application using React Native and Android Studio to reduce the time needed to find a parking space in Brasília. Initially we prototyped the application using Figma in order to get feedback about the user experience and improve the interface. We also worked with Google Firebase to manage user inputted data and easily update the cloud database. Firebase also provides tools for tracking analytics, reporting and fixing app crashes, creating marketing and product experiment. Our group collaborated using version control systems to organize modifications and assign tasks.
 
-Maria Eduarda Machado de Holanda -  190043725
+## Running the project
 
-Pedro de Torres Maschio - 190018763
+As we utilized Google Firebase, before running the project you must create a Google API key, otherwise you will not be able to acess our main functionalities. 
 
-Tong Zhou - 190038764
+To run the project, you must firstly install **node** and **npm** softwares in your operational system. We used Windows for that matter. Official documentation about installation may be found [here](https://nodejs.org/en/download/).
 
-
-# Uso
-
-O aplicativo foi compilado e testado no sistema operacional Android. Acreditamos que a maioria dos componentes seja compatível com o iOS, mas não garantimos isso.
-
-# Desenvolvimento
-
-Para executar o projeto em desenvolvimento, é preciso ter o **node** e **npm** instalado em seu sistema operacional. Instruções oficiais de instalação encontram-se [aqui](https://nodejs.org/en/download/).
-
-Além disso, é preciso instalar o expo-cli, o que pode ser feito em um terminal com o uso do seguinte comando:
-
+Furthermore, you must install **expo-cli**, which can be done by using the following command in your terminal:
 ```
 npm install -g expo-cli
 ```
 
-Após a instalação, pode-se clonar o projeto do github e então instalar as suas dependências com o uso dos seguintes comandos:
+After that, you can clone the github project and install the dependencies using the commands:
 
 ```
 git clone https://github.com/gss214/park-it.git
@@ -36,10 +33,10 @@ cd park-it
 npm install
 ```
 
-O comando **npm install** irá instalar todas as dependências do projeto, isso pode levar um tempo. Para executar o aplicativo, utiliza-se o comando:
+The command **npm install** will install all dependencies of the project, which may take a while. To run the app, use the command:
 
 ```
 expo start
 ```
 
-A execução do aplicativo pode ser feita em um celular Android real ou um emulador, conforme as instruções resultantes do comando acima.
+You may run the app with an Android smarthphone or an emulator, as instructed by the command above.
