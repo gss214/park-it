@@ -43,4 +43,4 @@ You may run the app with an Android smarthphone or an emulator, as instructed by
 
 ## Project Overview
 
- <img src="assets/park-it-overview.gif" width='500'>
+ <img src="assets/park-it-overview.gif" width='300'>
