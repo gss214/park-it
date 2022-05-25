@@ -40,3 +40,7 @@ expo start
 ```
 
 You may run the app with an Android smarthphone or an emulator, as instructed by the command above.
+
+## Project Overview
+
+ <img src="assets/park-it-overview.gif" width='200'>
